@@ -74,25 +74,62 @@ class Game:
 
     def start_game(self):
         room = AtticRoom()
+        print()
         output_slow(room.intro_text())
+        print()
         print("1. Window \n2. Door")
         choice = input("Where will you go? > ")
         if choice == "1":
-            output_slow(
-                "The window shakes violently as you approach, the wind outside whipping up into a frenzy. The balcony is soaking wet from the rain, and as you peer over the edge you realize you cannot see the ground. You can, however, see another small balcony a few floors below you."
-            )
-            # print("1. Return to the relative safety of the room \n2. Take your chances and leap")
-            # if choice == "1":
-            #     output_slow("You return to the attic room.")
-            #     print("1. Door")
-            #     if choice =="1":
-            #         pass
-            # if choice =="2":
-            #     output_slow("You ded")
-            #     output_slower("GAME OVER")
-            #     exit()
+            Game.go_attic_window(self)
+        if choice == "2":
+            Game.go_staircase(self)
+
+    def go_attic_window(self):
+        room = AtticRoomWindow()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print(
+            "1. Go back to the relative safety of the attic room \n2. Take your chances and leap"
+        )
+        choice = input("Where will you go? > ")
+        if choice == "1":
+            Game.return_attic_room(self)
+        if choice == "2":
+            print("GAME OVER")
+            exit()
+
+    def return_attic_room(self):
+        room = AtticRoom()
+        print()
+        output_slow(room.return_text())
+        print()
+        print("1. Window \n2. Door")
+        choice = input("Where will you go? > ")
+        if choice == "1":
+            Game.go_attic_window(self)
+        if choice == "2":
+            Game.go_staircase(self)
+        
+    def go_staircase(self):
+        room = StairCase()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room")
+        choice = input("Where will you go? > ")
+        if choice == "1":
+            pass
         if choice == "2":
             pass
+        if choice == "3":
+            pass
+        if choice == "4":
+            pass
+        if choice == "5":
+            pass
+        if choice =="6":
+            Game.return_attic_room(self)
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
