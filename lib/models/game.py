@@ -90,7 +90,9 @@ class Game:
         print(
             "1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room"
         )
+
         choice = input("Where will you go? >> ")
+
         if choice == "1":
             Game.go_fourth_floor(self)
         if choice == "2":
@@ -100,6 +102,7 @@ class Game:
         if choice == "4":
             Game.go_first_floor(self)
         if choice == "5":
+
             Game.go_entryway(self)
         if choice == "6":
             Game.return_attic_room(self)
@@ -123,6 +126,7 @@ class Game:
             Game.go_first_floor(self)
         if choice == "5":
             Game.go_entryway(self)
+
         if choice == "6":
             Game.return_attic_room(self)
 
@@ -212,31 +216,46 @@ class Game:
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
 
-    # def battle(self):
-    #     if not self.player or not self.current_enemy:
-    #         print("Must be alive to battle")
-    #         return
-    #     print(f"A {self.current_enemy} appeared!")
 
-    #     while self.player.hp > 0 and self.current_enemy.hp > 0:
-    #         print(f"{self.player.name}'s HP: {self.player.hp}")
-    #         print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
+# Battle Code
 
-    #     player_choice = input("Press 'a' to attack:")
-    #     if player_choice in ["a"]:
-    #         self.attack(self.player, self.current_enemy)
-    #     else:
-    #         print("Invalid choice. You must battle")
+# def battle(self):
+#     if not self.player or not self.current_enemy:
+#         print("Must be alive to battle")
+#         return
+#     print(f"A {self.current_enemy} appeared!")
 
-    #     if self.current_enemy.hp <= 0:
-    #         print(f"You defeated {self.current_enemy.name}!")
+#     while self.player.hp > 0 and self.current_enemy.hp > 0:
+#         print(f"{self.player.name}'s HP: {self.player.hp}")
+#         print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
-    #     self.attack(self.current_enemy, self.player)
-    #     if self.player.hp <= 0:
-    #         print("You have become another soul within the tower")
+#     player_choice = input("Press 'a' to attack:")
+#     if player_choice in ["a"]:
+#         self.attack(self.player, self.current_enemy)
+#     else:
+#         print("Invalid choice. You must battle")
 
-    # def attack(self, attacker, target):
-    #     damage = attacker.damage
-    #     print(f"{attacker.name} attacks {target.name} for {damage} damage!")
-    #     target.hp -= damage
+#     if self.current_enemy.hp <= 0:
+#         print(f"You defeated {self.current_enemy.name}!")
 
+#     self.attack(self.current_enemy, self.player)
+#     if self.player.hp <= 0:
+#         print("You have become another soul within the tower")
+
+# def attack(self, attacker, target):
+#     damage = attacker.damage
+#     print(f"{attacker.name} attacks {target.name} for {damage} damage!")
+#     target.hp -= damage
+
+
+# encounter code
+
+# encounter_chance = random.random()
+# if encounter_chance < 0.9:
+#     print(f"A {self.current_enemy} appeared!")
+#     self.random_encounter()
+
+#     if self.current_enemy:
+#         self.battle()
+
+    
