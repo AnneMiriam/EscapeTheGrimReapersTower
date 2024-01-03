@@ -1,5 +1,6 @@
 
 from models.__init__ import CURSOR, CONN
+
 import random
 
 class Enemy:
@@ -10,39 +11,40 @@ class Enemy:
         self.name = name
         self.hp = hp
         self.damage = damage
-        
+
     @property
     def name(self):
         return self._name
+
     @name.setter
     def name(self, name):
         if isinstance(name, str):
             self._name = name
         else:
             raise ValueError("Name must be a string.")
-    
-        
+
     @property
     def hp(self):
         return self._hp
+
     @hp.setter
     def hp(self, hp):
         if isinstance(hp, int) and hp >= 0:
             self._hp = hp
         else:
             raise ValueError("HP must be a positive integer.")
-        
+
     @property
     def damage(self):
         return self._damage
+
     @damage.setter
     def hp(self, damage):
         if isinstance(damage, int) and damage >= 0:
             self._damage = damage
         else:
             raise ValueError("Damage must be a positive integer.")
-        
-        
+
     @classmethod
     def create_table(cls):
         sql = """ CREATE TABLE IF NOT EXISTS enemies (
@@ -53,14 +55,13 @@ class Enemy:
               """
         CURSOR.execute(sql)
         CONN.commit()
-    
+
     @classmethod
     def drop_table(cls):
         sql = """DROP TABLE IF EXISTS enemies"""
         CURSOR.execute(sql)
         CONN.commit()
 
-    
     def save(self):
         sql = """INSERT INTO enemies (name, hp, damage)
                  VALUES (?, ?, ?, ?)"""
@@ -68,6 +69,7 @@ class Enemy:
                             self.name, self.hp, self.damage
                             )
                         )
+
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).ALL[self.id] = self
@@ -80,6 +82,7 @@ class Enemy:
                             self.name, self.hp, 
                             self.damage, self.id)
                         )
+
         CONN.commit()
 
     def delete(self):
@@ -96,6 +99,7 @@ class Enemy:
             enemy.name = row[1]
             enemy.hp = row[2]
             enemy.damage = row[3]           
+
         else:
             enemy = cls(row[1], row[2], row[3])
             enemy.id = row[0]
@@ -119,6 +123,7 @@ class Enemy:
 
     def is_alive(self):
         return self.hp > 0
+
 
 
     
@@ -146,3 +151,4 @@ class Enemy:
 #         self.hp = 10
 #         self.damage = random.randint(5, 10)
         
+
