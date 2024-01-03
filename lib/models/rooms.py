@@ -1,6 +1,7 @@
 import random
 import Enemy
 import NonPlayChar
+from models.__init__ import CURSOR, CONN
 
 
 class MapRoom:
@@ -112,7 +113,7 @@ class TradingGhost(MapRoom):
 
     def transaction(self, seller, consumer, item):
         if item.healing_value > consumer.hp:
-            print("That price is beyond your budget!")
+            print("you are lacking in vitality, your HP is insufficient.")
             return
         seller.inventory.remove(item)
         consumer.inventory.append(item)
