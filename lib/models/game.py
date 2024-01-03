@@ -210,6 +210,14 @@ class Game:
 
         
 
+        encounter_chance = random.random()
+        if encounter_chance < 1.0:
+            print(f"A {self.current_enemy} appeared!")
+            self.random_encounter()
+
+        if self.current_enemy:
+            self.battle()
+
     def go_first_floor(self):
         room = FirstFloorRoom()
         print()
@@ -246,34 +254,40 @@ class Game:
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
 
+    # Battle Code
 
 
-# Battle Code
-def battle(self):
-    if not self.player or not self.current_enemy:
-        print("Must be alive to battle")
-        return
-    print(f"A {self.current_enemy} appeared!")
+    def battle(self):
+        if not self.player or not self.current_enemy:
+            print("Must be alive to battle")
+            return
 
-    while self.player.hp > 0 and self.current_enemy.hp > 0:
-        print(f"{self.player.name}'s HP: {self.player.hp}")
-        print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
+        print(f"A {self.current_enemy} appeared!")
 
-    player_choice = input("Press 'a' to attack:")
-    if player_choice in ["a"]:
-        self.attack(self.player, self.current_enemy)
-    else:
-        print("Invalid choice. You must battle")
+        while self.player.hp > 0 and self.current_enemy.hp > 0:
+            print(f"{self.player.name}'s HP: {self.player.hp}")
+            print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
-    if self.current_enemy.hp <= 0:
-        print(f"You defeated {self.current_enemy.name}!")
+            player_choice = input("Press 'a' to attack:")
+            if player_choice in ["a"]:
+                self.attack(self.player, self.current_enemy)
+            else:
+                print("Invalid choice. You must battle")
 
-    self.attack(self.current_enemy, self.player)
-    if self.player.hp <= 0:
-        print("You have become another soul within the tower")
+            if self.current_enemy.hp <= 0:
+                print(f"You defeated {self.current_enemy.name}!")
+                break
+
+            self.attack(self.current_enemy, self.player)
+            if self.player.hp <= 0:
+                print("You have become another soul within the tower")
+                break
+
+    def attack(self, attacker, target):
+        attacker_damage = attacker.damage
+        print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
+        target.hp -= attacker_damage
 
 
-def attack(self, attacker, target):
-    damage = attacker.damage
-    print(f"{attacker.name} attacks {target.name} for {damage} damage!")
-    target.hp -= damage
+
+
