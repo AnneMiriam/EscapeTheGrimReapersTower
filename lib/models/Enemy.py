@@ -1,7 +1,7 @@
-
 from models.__init__ import CURSOR, CONN
 
 import random
+
 
 class Enemy:
     ALL = {}
@@ -86,10 +86,7 @@ class Enemy:
         sql = """UPDATE enemies
                  SET name = ?, hp = ?, damage = ?
                  WHERE id = ?"""
-        CURSOR.execute(sql, (
-                            self.name, self.hp, 
-                            self.damage, self.id)
-                        )
+        CURSOR.execute(sql, (self.name, self.hp, self.damage, self.id))
         CONN.commit()
 
     def delete(self):
@@ -112,7 +109,7 @@ class Enemy:
         if enemy:
             enemy.name = row[1]
             enemy.hp = row[2]
-            enemy.damage = row[3]           
+            enemy.damage = row[3]
 
         else:
             enemy = cls(row[1], row[2], row[3])
@@ -131,7 +128,6 @@ class Enemy:
         sql = """SELECT * FROM enemies WHERE id = ?"""
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
 
 
     

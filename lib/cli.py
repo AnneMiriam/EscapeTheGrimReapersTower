@@ -33,6 +33,7 @@ def main():
             game = Game(None, None)
             game.create_enemy()
             menu()
+
             break
         
         else:

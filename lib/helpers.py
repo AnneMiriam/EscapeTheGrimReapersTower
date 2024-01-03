@@ -36,6 +36,8 @@ def helper_1():
     print("Performing useful function#1.")
 
 
+
+
 def output_slow(output):
     for char in output:
         print(char, end="", flush=True)
