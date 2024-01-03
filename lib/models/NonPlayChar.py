@@ -1,4 +1,4 @@
-import items
+from models.items import *
 
 class NonPlayableCharacter():
     def __init__(self):
@@ -11,7 +11,7 @@ class NonPlayableCharacter():
 class Casper(NonPlayableCharacter):
     def __init__(self):
         self.name = "Ghost"
-        self.inventory = [items.StaleBread(),
-                          items.StaleBread(),
-                          items.Rope(),
-                          items.MysteriousLiquid()]
+        self.inventory = [Consumable.StaleBread(),
+                          Consumable.StaleBread(),
+                          Usable.Rope(),
+                          Consumable.MysteriousLiquid()]

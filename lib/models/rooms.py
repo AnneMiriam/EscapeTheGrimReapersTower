@@ -1,15 +1,14 @@
 import random
-from enemy import Enemy
+from models.Enemy import Enemy
 from data.default_enemies import default_enemies
-import NonPlayChar
+from models.NonPlayChar import *
 from models.__init__ import CURSOR, CONN
 
 
 
 class MapRoom:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        pass
 
     def intro_text(self):
         raise NotImplementedError("")
@@ -20,9 +19,7 @@ class MapRoom:
 
 class AtticRoom(MapRoom):
     def intro_text(self):
-        return """
-        You take another look around the room. You can see that the window opens up onto a small balcony. 
-        """
+        return """You take another look around the room. You can see that the window opens up onto a small balcony."""
 
 
 class StairCase(MapRoom):
@@ -129,14 +126,14 @@ class EnemyAndFriends(MapRoom):
     #     text = self.alive_text if self.enemy.alive() else self.dead_text
     #     return text
 
-    # def modify_player(self, player):
-    #     if self.enemy.alive():
-    #         player.hp = player.hp - self.enemy.damage
-    #         print(
-    #             "Enemy does {} damage. You have {} HP remaining.".format(
-    #                 self.enemy.damage, player.hp
-    #             )
-    #         )
+    def modify_player(self, player):
+        if self.enemy.alive():
+            player.hp = player.hp - self.enemy.damage
+            print(
+                "Enemy does {} damage. You have {} HP remaining.".format(
+                    self.enemy.damage, player.hp
+                )
+            )
 
 
 class TradingGhost(MapRoom):
@@ -157,7 +154,7 @@ class TradingGhost(MapRoom):
         """
 
     def __init__(self, x, y):
-        self.trader = NonPlayChar.Casper()
+        self.trader = Casper()
         super().__init__(x, y)
 
     def trade(self, consumer, seller):

@@ -1,6 +1,6 @@
 import re 
-import items
-from __init__ import CURSOR, CONN 
+from models.items import *
+from models.__init__ import CURSOR, CONN 
 
 class Player:
     
@@ -30,8 +30,6 @@ class Player:
     def name(self, name):
         if not isinstance(name, str):
             raise ValueError('Name must be a string.')
-        elif not re.match("^[A-Za-z]*$"):
-            raise ValueError('Name must only contain letters')
         self._name = name
         
     def is_alive(self):
@@ -42,7 +40,7 @@ class Player:
     def create_table(cls):
         sql = '''
             CREATE TABLE IF NOT EXISTS players (
-                id INTEGER PRIMARY KEY
+                id INTEGER PRIMARY KEY,
                 name TEXT,
                 hp INTEGER 
             )
