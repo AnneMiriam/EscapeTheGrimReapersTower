@@ -23,12 +23,12 @@ def main():
         elif choice == "1":
             print("-" * 50)
                 # Start new game session. Initialize game with player and pass onto Game.
-            game = Game(None, None)
+            game = Game(None)
             game.create_player()
             game.start_game()
             print("Enter your choice >>")
             print("-" * 50)
-            continue
+            break
         else:
             print("Invalid choice")
 
