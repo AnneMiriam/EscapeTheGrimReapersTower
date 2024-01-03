@@ -1,7 +1,9 @@
 import random
-import Enemy
+from enemy import Enemy
+from data.default_enemies import default_enemies
 import NonPlayChar
 from models.__init__ import CURSOR, CONN
+
 
 
 class MapRoom:
@@ -98,25 +100,28 @@ class VictoryIsYours(MapRoom):
 class EnemyAndFriends(MapRoom):
     def __init__(self, x, y):
         r = random.random()
-        if r < 0.50:
-            self.enemy = Enemy.BlackCat()
-            self.alive_text = ""
-            self.dead_text = ""
 
-        elif r < 0.75:
-            self.enemy = Enemy.Poltergeist()
-            self.alive_text = ""
-            self.dead_text = ""
+        if r < 0.40:
+            self.enemy = default_enemies[1]
+            self.alive_text = "A Black Cat has crossed your path!"
+            self.dead_text = "Rude! It was just walking by!"
 
-        elif r < 0.90:
-            # self.enemy = enemies.?()
-            self.alive_text = ""
-            self.dead_text = ""
+        elif r < 0.60:
+            self.enemy = default_enemies[3]
+            self.alive_text = "A Black Widow has bitten you."
+            self.dead_text = "You squished it."
+
+        elif r < 0.80:
+            self.enemy = default_enemies[2]
+            self.alive_text = "You pissed off a Poltergeist!"
+            self.dead_text = "Your exorcism succeeded!"
 
         else:
-            self.enemy = Enemy.GrimReaper()
-            self.alive_text = ""
-            self.dead_text = ""
+
+            self.enemy = default_enemies[0]
+            self.alive_text = "You have run into the Grim Reaper!"
+            self.dead_text = "They are death! They cannot be killed!"
+
 
         super().__init__(x, y)
 

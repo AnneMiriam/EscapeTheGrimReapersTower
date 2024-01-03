@@ -1,22 +1,24 @@
 import random
 
-default_characters = [
+default_enemies = [
         {
             "Name": "The Grim Reaper",
-            "Type": "boss",
-            "HP": 50,
-            "Power": random.randint(10, 20)
+            "HP": 100,
+            "Damage": random.randint(10, 20)
         },
         {
             "Name": "Black Cat",
-            "Type": "level 1",
             "HP": 9,
-            "Power": 2
+            "Damage": 2
         },
         {
             "Name": "Ghost",
-            "Type": "level 2",
             "HP": 5,
-            "Power": random.randint(5, 10)
+            "Damage": random.randint(5, 10)
+        },
+        {
+            "Name": "Black Widow",
+            "HP": 8,
+            "Damage": 5
         }
 ]
