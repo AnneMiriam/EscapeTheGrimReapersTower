@@ -47,7 +47,7 @@ class Game:
         output_slow(room.intro_text())
         print()
         print("1. Window \n2. Door")
-        choice = input("Where will you go? > ")
+        choice = input("Where will you go? >> ")
         if choice == "1":
             Game.go_attic_window(self)
         if choice == "2":
@@ -61,11 +61,13 @@ class Game:
         print(
             "1. Go back to the relative safety of the attic room \n2. Take your chances and leap"
         )
-        choice = input("Where will you go? > ")
+        choice = input("Where will you go? >> ")
         if choice == "1":
             Game.return_attic_room(self)
         if choice == "2":
-            print("GAME OVER")
+            print()
+            output_slow("Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain.")
+            output_slower("GAME OVER")
             exit()
 
     def return_attic_room(self):
@@ -74,7 +76,7 @@ class Game:
         output_slow(room.return_text())
         print()
         print("1. Window \n2. Door")
-        choice = input("Where will you go? > ")
+        choice = input("Where will you go? >> ")
         if choice == "1":
             Game.go_attic_window(self)
         if choice == "2":
@@ -88,19 +90,117 @@ class Game:
         print(
             "1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room"
         )
-        choice = input("Where will you go? > ")
+
+        choice = input("Where will you go? >> ")
+
+        if choice == "1":
+            Game.go_fourth_floor(self)
+        if choice == "2":
+            Game.go_third_floor(self)
+        if choice == "3":
+            Game.go_second_floor(self)
+        if choice == "4":
+            Game.go_first_floor(self)
+        if choice == "5":
+
+            Game.go_entryway(self)
+        if choice == "6":
+            Game.return_attic_room(self)
+
+    def return_staircase(self):
+        room = StairCase()
+        print()
+        output_slow(room.return_text())
+        print()
+        print(
+            "1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room"
+        )
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.go_fourth_floor(self)
+        if choice == "2":
+            Game.go_third_floor(self)
+        if choice == "3":
+            Game.go_second_floor(self)
+        if choice == "4":
+            Game.go_first_floor(self)
+        if choice == "5":
+            Game.go_entryway(self)
+
+        if choice == "6":
+            Game.return_attic_room(self)
+
+    def go_fourth_floor(self):
+        room = FourthFloorRoom()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1. Return to the staircase")
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.return_staircase(self)
+
+    def go_third_floor(self):
+        room = ThirdFloorRoom()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1. Window \n2. Return to staircase")
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.go_third_floor_window(self)
+        if choice == "2":
+            Game.return_staircase(self)
+
+    def go_third_floor_window(self):
+        room = ThirdFloorWindow()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print(
+            "1. Go back to the relative safety of the room \n2. Take your chances and leap"
+        )
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.go_third_floor(self)
+        if choice == "2":
+            print()
+            output_slow("Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain.")
+            output_slower("GAME OVER")
+
+    def go_second_floor(self):
+        room = SecondFloorRoom()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1. Investigate desk \n2. Return to staircase")
+        choice = input("Where will you go? >> ")
         if choice == "1":
             pass
         if choice == "2":
+            Game.return_staircase(self)
+
+    def go_first_floor(self):
+        room = FirstFloorRoom()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1. Return to staircase")
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.return_staircase(self)
+
+    def go_entryway(self):
+        room = EntryWay()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print("1.Try your luck with the front door \n2. Return to staircase")
+        choice = input("Where will you go? >> ")
+        if choice == "1":
             pass
-        if choice == "3":
-            pass
-        if choice == "4":
-            pass
-        if choice == "5":
-            pass
-        if choice == "6":
-            Game.return_attic_room(self)
+        if choice == "2":
+            Game.return_staircase(self)
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
@@ -157,3 +257,5 @@ class Game:
 
 #     if self.current_enemy:
 #         self.battle()
+
+    
