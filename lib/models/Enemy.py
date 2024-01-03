@@ -1,11 +1,11 @@
-
 from models.__init__ import CURSOR, CONN
 
 import random
 
+
 class Enemy:
     all = {}
-    
+
     def __init__(self, hp, damage, name=None, id=None):
         self.id = id
         self.name = name
@@ -65,10 +65,7 @@ class Enemy:
     def save(self):
         sql = """INSERT INTO enemies (name, hp, damage)
                  VALUES (?, ?, ?, ?)"""
-        CURSOR.execute(sql, (
-                            self.name, self.hp, self.damage
-                            )
-                        )
+        CURSOR.execute(sql, (self.name, self.hp, self.damage))
 
         CONN.commit()
         self.id = CURSOR.lastrowid
@@ -78,10 +75,7 @@ class Enemy:
         sql = """UPDATE enemies
                  SET name = ?, hp = ?, damage = ?
                  WHERE id = ?"""
-        CURSOR.execute(sql, (
-                            self.name, self.hp, 
-                            self.damage, self.id)
-                        )
+        CURSOR.execute(sql, (self.name, self.hp, self.damage, self.id))
 
         CONN.commit()
 
@@ -98,7 +92,7 @@ class Enemy:
         if enemy:
             enemy.name = row[1]
             enemy.hp = row[2]
-            enemy.damage = row[3]           
+            enemy.damage = row[3]
 
         else:
             enemy = cls(row[1], row[2], row[3])
@@ -117,7 +111,7 @@ class Enemy:
         sql = """SELECT * FROM enemies WHERE id = ?"""
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
-    
+
     def __str__(self):
         return self.name
 
@@ -125,12 +119,6 @@ class Enemy:
         return self.hp > 0
 
 
-
-    
-    
-    
-    
-    
 # class GrimReaper(Enemy):
 #     def __init__(self, room):
 #         self.name = "The Grim Reaper"
@@ -138,17 +126,15 @@ class Enemy:
 #         self.hp = 50
 #         self.damage = random.randint(10, 20)
 #         self.room = room
-        
+
 # class BlackCat(Enemy):
 #     def __init__(self):
 #         self.name = "Black Cat"
 #         self.hp = 9
 #         self.damage = 2
-        
+
 # class Poltergeist(Enemy):
 #     def __init__(self):
 #         self.name = "Ghost"
 #         self.hp = 10
 #         self.damage = random.randint(5, 10)
-        
-

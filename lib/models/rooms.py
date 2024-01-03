@@ -5,7 +5,6 @@ from models.NonPlayChar import *
 from models.__init__ import CURSOR, CONN
 
 
-
 class MapRoom:
     def __init__(self):
         pass
@@ -114,13 +113,19 @@ class EnemyAndFriends(MapRoom):
             self.dead_text = "Your exorcism succeeded!"
 
         else:
-
             self.enemy = default_enemies[0]
             self.alive_text = "You have run into the Grim Reaper!"
             self.dead_text = "They are death! They cannot be killed!"
 
-
         super().__init__(x, y)
+
+
+    def intro_text(self):
+        text = self.alive_text if self.enemy.is_alive() else self.dead_text
+        return text
+
+    def modify_player(self, player):
+        if self.enemy.is_alive():
 
     # def intro_text(self):
     #     text = self.alive_text if self.enemy.alive() else self.dead_text
@@ -128,6 +133,7 @@ class EnemyAndFriends(MapRoom):
 
     def modify_player(self, player):
         if self.enemy.alive():
+
             player.hp = player.hp - self.enemy.damage
             print(
                 "Enemy does {} damage. You have {} HP remaining.".format(
