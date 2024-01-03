@@ -1,6 +1,7 @@
 # lib/cli.py
 
 from helpers import (
+    display_intro,
     exit_program,
     helper_1
 )
@@ -8,6 +9,12 @@ from helpers import (
 
 def main():
     while True:
+        print()
+        print()
+        print("ESCAPE THE GRIM REAPER'S TOWER")
+        print()
+        print()
+        display_intro()
         menu()
         choice = input("> ")
         if choice == "0":
@@ -19,9 +26,9 @@ def main():
 
 
 def menu():
-    print("Please select an option:")
+    print("What do you want to do?")
     print("0. Exit the program")
-    print("1. Some useful function")
+    print("1. Take a breath - remember who you are")
 
 
 if __name__ == "__main__":
