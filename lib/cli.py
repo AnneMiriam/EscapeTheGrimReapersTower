@@ -7,6 +7,7 @@ from helpers import (
 )
 from models.game import Game
 
+
 def main():
 
     while True:
@@ -23,12 +24,17 @@ def main():
         elif choice == "1":
             print("-" * 50)
                 # Start new game session. Initialize game with player and pass onto Game.
-            game = Game(None)
+            game = Game(None, None)
             game.create_player()
             game.start_game()
-            print("Enter your choice >>")
-            print("-" * 50)
+            # print("Enter your choice >>")
+            # print("-" * 50)
+        elif choice == "2":
+            game = Game(None, None)
+            game.create_enemy()
+            menu()
             break
+        
         else:
             print("Invalid choice")
 
@@ -37,6 +43,7 @@ def menu():
     print("What do you want to do?")
     print("0. Exit the program")
     print("1. Take a breath - remember who you are")
+    print("2. Extra Challenge - create an enemy")
 
 
 

@@ -8,8 +8,9 @@ from helpers import output_slow, output_slower
 
 
 class Game:
-    def __init__(self, player):
+    def __init__(self, player, enemy):
         self.player = player
+        self.enemy = enemy
         self.current_enemy = None
 
     def create_player(self):
@@ -36,18 +37,34 @@ class Game:
             output_slow(
                 "The window shakes violently as you approach, the wind outside whipping up into a frenzy. The balcony is soaking wet from the rain, and as you peer over the edge you realize you cannot see the ground. You can, however, see another small balcony a few floors below you."
             )
-            # print("1. Return to the relative safety of the room \n2. Take your chances and leap")
-            # if choice == "1":
-            #     output_slow("You return to the attic room.")
-            #     print("1. Door")
-            #     if choice =="1":
-            #         pass
-            # if choice =="2":
-            #     output_slow("You ded")
-            #     output_slower("GAME OVER")
-            #     exit()
+            print("1. Return to the relative safety of the room \n2. Take your chances and leap")
+            if choice == "1":
+                output_slow("You return to the attic room.")
+                print("1. Door")
+                if choice =="1":
+                    pass
+            if choice == "2":
+                output_slow("You ded")
+                output_slower("GAME OVER")
+                exit()
         if choice == "2":
             pass
+        
+    def create_enemy(self):
+        while True:
+            print("What kind of enemy")
+            enemy_name = input("Enter it's name: ")
+            # enemy_damage = input("How much damage can your enemy cause: " )
+            try:
+                # Initialize enemy instance
+                self.enemy = Enemy(enemy_name)
+                break  # Exit loop if successful
+            except ValueError as e:
+                print(e)
+                continue
+        # Create table and save enemy object to db
+        self.enemy.create_table()
+        self.enemy.save()
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
