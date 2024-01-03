@@ -8,8 +8,9 @@ from helpers import output_slow, output_slower
 
 
 class Game:
-    def __init__(self, player):
+    def __init__(self, player, enemy):
         self.player = player
+        self.enemy = enemy
         self.current_enemy = None
 
     def create_player(self):
@@ -179,6 +180,24 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
+        
+    def create_enemy(self):
+        while True:
+            print("What kind of enemy")
+            enemy_name = input("Enter it's name: ")
+            # enemy_damage = input("How much damage can your enemy cause: " )
+            try:
+                # Initialize enemy instance
+                self.enemy = Enemy(enemy_name)
+                break  # Exit loop if successful
+            except ValueError as e:
+                print(e)
+                continue
+        # Create table and save enemy object to db
+        self.enemy.create_table()
+        self.enemy.save()
+
+        
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -201,6 +220,7 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
+
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
