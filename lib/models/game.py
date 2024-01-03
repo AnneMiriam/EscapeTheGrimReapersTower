@@ -66,7 +66,9 @@ class Game:
             Game.return_attic_room(self)
         if choice == "2":
             print()
-            output_slow("Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain.")
+            output_slow(
+                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
+            )
             output_slower("GAME OVER")
             exit()
 
@@ -102,7 +104,6 @@ class Game:
         if choice == "4":
             Game.go_first_floor(self)
         if choice == "5":
-
             Game.go_entryway(self)
         if choice == "6":
             Game.return_attic_room(self)
@@ -165,7 +166,9 @@ class Game:
             Game.go_third_floor(self)
         if choice == "2":
             print()
-            output_slow("Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain.")
+            output_slow(
+                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
+            )
             output_slower("GAME OVER")
 
     def go_second_floor(self):
@@ -179,6 +182,14 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
+
+        encounter_chance = random.random()
+        if encounter_chance < 1.0:
+            print(f"A {self.current_enemy} appeared!")
+            self.random_encounter()
+
+        if self.current_enemy:
+            self.battle()
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -216,46 +227,38 @@ class Game:
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
 
+    # Battle Code
 
-# Battle Code
+    def battle(self):
+        if not self.player or not self.current_enemy:
+            print("Must be alive to battle")
+            return
 
-# def battle(self):
-#     if not self.player or not self.current_enemy:
-#         print("Must be alive to battle")
-#         return
-#     print(f"A {self.current_enemy} appeared!")
+        print(f"A {self.current_enemy} appeared!")
 
-#     while self.player.hp > 0 and self.current_enemy.hp > 0:
-#         print(f"{self.player.name}'s HP: {self.player.hp}")
-#         print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
+        while self.player.hp > 0 and self.current_enemy.hp > 0:
+            print(f"{self.player.name}'s HP: {self.player.hp}")
+            print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
-#     player_choice = input("Press 'a' to attack:")
-#     if player_choice in ["a"]:
-#         self.attack(self.player, self.current_enemy)
-#     else:
-#         print("Invalid choice. You must battle")
+            player_choice = input("Press 'a' to attack:")
+            if player_choice in ["a"]:
+                self.attack(self.player, self.current_enemy)
+            else:
+                print("Invalid choice. You must battle")
 
-#     if self.current_enemy.hp <= 0:
-#         print(f"You defeated {self.current_enemy.name}!")
+            if self.current_enemy.hp <= 0:
+                print(f"You defeated {self.current_enemy.name}!")
+                break
 
-#     self.attack(self.current_enemy, self.player)
-#     if self.player.hp <= 0:
-#         print("You have become another soul within the tower")
+            self.attack(self.current_enemy, self.player)
+            if self.player.hp <= 0:
+                print("You have become another soul within the tower")
+                break
 
-# def attack(self, attacker, target):
-#     damage = attacker.damage
-#     print(f"{attacker.name} attacks {target.name} for {damage} damage!")
-#     target.hp -= damage
+    def attack(self, attacker, target):
+        attacker_damage = attacker.damage
+        print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
+        target.hp -= attacker_damage
 
 
 # encounter code
-
-# encounter_chance = random.random()
-# if encounter_chance < 0.9:
-#     print(f"A {self.current_enemy} appeared!")
-#     self.random_encounter()
-
-#     if self.current_enemy:
-#         self.battle()
-
-    
