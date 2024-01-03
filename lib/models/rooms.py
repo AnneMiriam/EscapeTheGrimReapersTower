@@ -32,7 +32,8 @@ class AtticRoomWindow(MapRoom):
 class StairCase(MapRoom):
     def intro_text(self):
         return """The hinges of the door squeal as you open it, their infrequent use and lack of care made evident. Before you is a staircase, its walls and steps carved from the same stone as the attic room. It curves as it descends, spiralling ever downward into the great unknown.\nAs you descend, you come upon a door. It appears to be unlocked. You count three more doors before the staircase opens at the bottom, a soft glow eminating from the room awaiting you there."""
-
+    def return_text(self):
+        return """You return to the staircase. Where else can you go?"""
 
 class FourthFloorRoom(MapRoom):
     def intro_text(self):
@@ -43,6 +44,10 @@ class ThirdFloorRoom(MapRoom):
     def intro_text(self):
         return """You find another small room. Like the attic room, this one has a window that leads out to a small balcony.\nThe room is otherwise bare, save for the candle wax pooling in the center of the floor beneath the lantern.
         """
+
+class ThirdFloorWindow(MapRoom):
+    def intro_text(self):
+        return """The wind howls, spraying you with droplets of rain, thoroughly soaking your clothes. It's still too dark and stormy to see the bottom of the tower, but below you you can see another balcony. Above you, you see the balcony that must lead to the attic room."""
 
 
 class SecondFloorRoom(MapRoom):
@@ -105,7 +110,7 @@ class EnemyAndFriends(MapRoom):
     def intro_text(self):
         text = self.alive_text if self.enemy.is_alive() else self.dead_text
         return text
-
+      
     def modify_player(self, player):
         if self.enemy.is_alive():
             player.hp = player.hp - self.enemy.damage

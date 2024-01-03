@@ -26,7 +26,7 @@ def main():
             game = Game(None)
             game.create_player()
             game.start_game()
-            print("Enter your choice >>")
+            # print("Enter your choice >>")
             print("-" * 50)
             break
         else:
