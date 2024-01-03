@@ -1,13 +1,13 @@
+
 from models.__init__ import CURSOR, CONN
-# import random
+import random
 
 class Enemy:
     all = {}
     
-    def __init__(self, type, hp, damage, name=None, id=None):
+    def __init__(self, hp, damage, name=None, id=None):
         self.id = id
         self.name = name
-        self.type = type
         self.hp = hp
         self.damage = damage
         
@@ -20,16 +20,7 @@ class Enemy:
             self._name = name
         else:
             raise ValueError("Name must be a string.")
-        
-    @property
-    def type(self):
-        return self._type
-    @type.setter
-    def type(self, type):
-        if isinstance(type, str):
-            self._type = type
-        else:
-            raise ValueError("Type must be a string.")
+    
         
     @property
     def hp(self):
@@ -57,7 +48,6 @@ class Enemy:
         sql = """ CREATE TABLE IF NOT EXISTS enemies (
                   id INTEGER PRIMARY KEY,
                   name TEXT,
-                  type TEXT,
                   hp INTEGER,
                   damage INTEGER)
               """
@@ -72,10 +62,10 @@ class Enemy:
 
     
     def save(self):
-        sql = """INSERT INTO enemies (name, type, hp, damage)
+        sql = """INSERT INTO enemies (name, hp, damage)
                  VALUES (?, ?, ?, ?)"""
         CURSOR.execute(sql, (
-                            self.name, self.type, self.hp, self.damage
+                            self.name, self.hp, self.damage
                             )
                         )
         CONN.commit()
@@ -84,10 +74,10 @@ class Enemy:
 
     def update(self):
         sql = """UPDATE enemies
-                 SET name = ?, type = ?, hp = ?, damage = ?
+                 SET name = ?, hp = ?, damage = ?
                  WHERE id = ?"""
         CURSOR.execute(sql, (
-                            self.name, self.type, self.hp, 
+                            self.name, self.hp, 
                             self.damage, self.id)
                         )
         CONN.commit()
@@ -104,11 +94,10 @@ class Enemy:
         enemy = cls.ALL.get(row[0])
         if enemy:
             enemy.name = row[1]
-            enemy.type = row[2]
-            enemy.hp = row[3]
-            enemy.damage = row[4]           
+            enemy.hp = row[2]
+            enemy.damage = row[3]           
         else:
-            enemy = cls(row[1], row[2], row[3], row[4])
+            enemy = cls(row[1], row[2], row[3])
             enemy.id = row[0]
             cls.ALL[enemy.id] = enemy
         return enemy
@@ -124,8 +113,17 @@ class Enemy:
         sql = """SELECT * FROM enemies WHERE id = ?"""
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def __str__(self):
+        return self.name
+
+    def is_alive(self):
+        return self.hp > 0
 
 
+    
+    
+    
     
     
 # class GrimReaper(Enemy):

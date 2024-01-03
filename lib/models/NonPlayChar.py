@@ -14,5 +14,4 @@ class Casper(NonPlayableCharacter):
         self.inventory = [items.StaleBread(),
                           items.StaleBread(),
                           items.Rope(),
-                        #   items.Key(),
-                          items.MysteryLiquid()]
+                          items.MysteriousLiquid()]
