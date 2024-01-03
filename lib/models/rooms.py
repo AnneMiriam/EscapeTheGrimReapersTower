@@ -1,6 +1,6 @@
 import random
-from models.Enemy import Enemy
-from data.default_enemies import default_enemies
+from models.Enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
+# from data.default_enemies import default_enemies
 from models.NonPlayChar import *
 from models.__init__ import CURSOR, CONN
 
@@ -86,22 +86,25 @@ class EnemyAndFriends(MapRoom):
         r = random.random()
 
         if r < 0.40:
-            self.enemy = default_enemies[1]
+            self.enemy = BlackCat()
             self.alive_text = "A Black Cat has crossed your path!"
             self.dead_text = "Rude! It was just walking by!"
 
         elif r < 0.60:
-            self.enemy = default_enemies[3]
+            self.enemy = BlackWidow()
             self.alive_text = "A Black Widow has bitten you."
             self.dead_text = "You squished it."
 
         elif r < 0.80:
-            self.enemy = default_enemies[2]
+            self.enemy = Poltergeist()
             self.alive_text = "You pissed off a Poltergeist!"
             self.dead_text = "Your exorcism succeeded!"
 
         else:
-            self.enemy = default_enemies[0]
+
+
+            self.enemy = GrimReaper()
+
             self.alive_text = "You have run into the Grim Reaper!"
             self.dead_text = "They are death! They cannot be killed!"
 
@@ -111,6 +114,7 @@ class EnemyAndFriends(MapRoom):
         text = self.alive_text if self.enemy.is_alive() else self.dead_text
         return text
       
+
     def modify_player(self, player):
         if self.enemy.is_alive():
             player.hp = player.hp - self.enemy.damage
@@ -159,7 +163,7 @@ class TradingGhost(MapRoom):
 
     def transaction(self, seller, consumer, item):
         if item.healing_value > consumer.hp:
-            print("you are lacking in vitality, your HP is insufficient.")
+            print("Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger.")
             return
         seller.inventory.remove(item)
         consumer.inventory.append(item)

@@ -8,8 +8,9 @@ from helpers import output_slow, output_slower
 
 
 class Game:
-    def __init__(self, player):
+    def __init__(self, player, enemy):
         self.player = player
+        self.enemy = enemy
         self.current_enemy = None
 
     def create_player(self):
@@ -133,6 +134,14 @@ class Game:
 
     def go_fourth_floor(self):
         room = FourthFloorRoom()
+        # encounter code
+        encounter_chance = random.random()
+        if encounter_chance < 0.9:
+            print(f"A {self.current_enemy} appeared!")
+            self.random_encounter()
+
+            if self.current_enemy:
+                self.battle()
         print()
         output_slow(room.intro_text())
         print()
@@ -182,6 +191,24 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
+        
+    def create_enemy(self):
+        while True:
+            print("What kind of enemy")
+            enemy_name = input("Enter it's name: ")
+            # enemy_damage = input("How much damage can your enemy cause: " )
+            try:
+                # Initialize enemy instance
+                self.enemy = Enemy(enemy_name)
+                break  # Exit loop if successful
+            except ValueError as e:
+                print(e)
+                continue
+        # Create table and save enemy object to db
+        self.enemy.create_table()
+        self.enemy.save()
+
+        
 
         encounter_chance = random.random()
         if encounter_chance < 1.0:
@@ -229,6 +256,7 @@ class Game:
 
     # Battle Code
 
+
     def battle(self):
         if not self.player or not self.current_enemy:
             print("Must be alive to battle")
@@ -261,4 +289,5 @@ class Game:
         target.hp -= attacker_damage
 
 
-# encounter code
+
+
