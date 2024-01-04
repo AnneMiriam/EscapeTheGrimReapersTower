@@ -142,19 +142,7 @@ class EnemyAndFriends(MapRoom):
 
 class TradingGhost(MapRoom):
     def intro_text(self):
-        return """
-        With a start, you realize you are not alone. 
-        In the center of the room floats an old woman, her translucent feet not hovering just an inch off the ground.
-        Her bony hands grip the sides of a knitted shawl that she seems to be appraising. 
-        As you approach, she looks up at you with a warm smile. 
-        "Oh! Hello dearie," she says. "It's been a long time since I had a visitor! 
-        My name is Margaret and I am the purveyor of the finest goods this tower has to offer. Of course,"
-        she chuckles lightly, "that isn't always saying much. I would be happy to part with any of my wares
-        for the right price!" Her smile droops a bit, and her eyes take on a pitying look. "However, I must warn you, 
-        my prices may not be to your liking. I can only deal in life, you see. It's the only thing with real 
-        value around here. But, if you're willing to part with just a sip of your vitality, I can give you anything you please,
-        anything at all!"
-        She looks at you expectantly. 
+        return """With a start, you realize you are not alone.\nIn the center of the room floats an old woman, her translucent feet not hovering just an inch off the ground. Her bony hands grip the sides of a knitted shawl that she seems to be appraising. As you approach, she looks up at you with a warm smile. \n"Oh! Hello dearie," she says. "It's been a long time since I had a visitor! My name is Margaret and I am the purveyor of the finest goods this tower has to offer. Of course," she chuckles lightly, "that isn't always saying much. I would be happy to part with any of my wares for the right price!" \nHer smile droops a bit, and her eyes take on a pitying look. \n"However, I must warn you, my prices may not be to your liking. I can only deal in life, you see. It's the only thing with real value around here. But, if you're willing to part with just a sip of your vitality, I can give you anything you please, anything at all!" \nShe looks at you expectantly. 
         """
 
     def __init__(self):

@@ -45,4 +45,9 @@ class Usable:
 class Rope(Usable):
     def __init__(self):
         self.name = "Rope"
-        self.description = ""
+        self.description = "A long, woven rope"
+        
+class Key(Usable):
+    def __init__(self):
+        self.name = "Key"
+        self.description = "A heavy iron key"

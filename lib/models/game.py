@@ -1,4 +1,5 @@
 import random
+from models.items import *
 from models.Enemy import Enemy
 from data.default_enemies import default_enemies
 from models.items import *
@@ -254,16 +255,20 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Investigate desk \n2. Return to staircase")
+        print("1. Investigate desk \n2. Return to staircase \n3. Check Inventory")
         choice = input("Where will you go? >> ")
         if choice == "1":
             print()
             output_slow(
                 "You open the drawer. Not much stands out to you at first - a couple of papers, some old letters maybe - but as you sift through the contents you find a large iron skeleton key. This may come in handy."
             )
+            self.player.add_to_inventory(Key())
             Game.go_second_floor(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.go_second_floor(self)
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -287,32 +292,54 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1.Try your luck with the front door \n2. Return to staircase")
+        print(
+            "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
+        )
         choice = input("Where will you go? >> ")
         if choice == "1":
-            print()
-            output_slow(
-                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
-            )
-            Game.return_entryway(self)
+            if any(isinstance(item, Key) for item in self.player.inventory):
+                print()
+                output_slow("You get out and win!")
+                output_slower("YOU HAVE ESCAPED DEATH")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+                )
+                Game.return_entryway(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_entryway(self)
 
     def return_entryway(self):
         room = EntryWay()
         print()
         output_slow(room.return_text())
         print()
-        print("1.Try your luck with the front door \n2. Return to staircase")
+        print(
+            "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
+        )
         choice = input("Where will you go? >> ")
         if choice == "1":
-            print()
-            output_slow(
-                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
-            )
-            Game.return_entryway(self)
+            if any(isinstance(item, Key) for item in self.player.inventory):
+                print()
+                output_slow("You get out and win!")
+                output_slower("YOU HAVE ESCAPED DEATH")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+                )
+                Game.return_entryway(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_entryway(self)
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
@@ -387,3 +414,4 @@ class Game:
             self.trade(player, self.trader)
         else:
             print("Unacceptable selection!")
+
