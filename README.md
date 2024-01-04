@@ -1,16 +1,12 @@
 # EscapeTheGrimReapersTower
 
-## Learning Goals
-
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
-
----
-
 ## Introduction
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+Welcome to The Grim Reaper's Tower. You have suddenly found yourself trapped inside it on the top floor. It is your goal to escape the tower. To do so you must make your way to the ground level where there is an entryway with a door, or you can jump/repel out a window to the ground where you find a gate. Before you can exit, however, you must find the key that unlocks the entry door/front gate. 
+There are other items that you can find along the way, that will help you, such as rope to help you if you choose the window option, or bread that can heal you.
+In the mean time there are, also, enemies throughout the tower that can damage your health. One of which is the Grim Reaper! For an added challenge, you can create your own enemy.
+
+Fork and clone this repo to play our cli based python game. Best of luck!
 
 Take a look at the directory structure:
 
@@ -19,18 +15,23 @@ Take a look at the directory structure:
 ├── Pipfile
 ├── Pipfile.lock
 ├── README.md
+├── data
+│    ├── default_enemies.py
 └── lib
     ├── models
     │   ├── __init__.py
-    │   └── model_1.py
+    │   ├── Enemy.py
+    │   ├── game.py
+    │   ├── items.py
+    │   ├── NonPlayChar.py
+    │   ├── player.py
+    │   └── rooms.py
     ├── cli.py
     ├── debug.py
     └── helpers.py
 ```
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
+
 
 ---
 
