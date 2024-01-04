@@ -30,6 +30,22 @@ class Game:
         self.player.create_table()
         self.player.save()
 
+    def create_enemy(self):
+        while True:
+            print("What kind of enemy")
+            enemy_name = input("Enter it's name: ")
+            # enemy_damage = input("How much damage can your enemy cause: " )
+            try:
+                # Initialize enemy instance
+                self.enemy = Enemy(enemy_name)
+                break  # Exit loop if successful
+            except ValueError as e:
+                print(e)
+                continue
+        # Create table and save enemy object to db
+        self.enemy.create_table()
+        self.enemy.save()
+
     def random_encounter(self):
         enemy_data = random.choice(default_enemies)
         # Create an Enemy instance with random attributes
@@ -137,10 +153,10 @@ class Game:
         # encounter code
         encounter_chance = random.random()
         if encounter_chance < 0.9:
-            print(f"A {self.current_enemy} appeared!")
             self.random_encounter()
 
             if self.current_enemy:
+                print(f"A {self.current_enemy} appeared!")
                 self.battle()
         print()
         output_slow(room.intro_text())
@@ -191,25 +207,6 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
-        
-    def create_enemy(self):
-        while True:
-            print("What kind of enemy")
-            enemy_name = input("Enter it's name: ")
-            # enemy_damage = input("How much damage can your enemy cause: " )
-            try:
-                # Initialize enemy instance
-                self.enemy = Enemy(enemy_name)
-                break  # Exit loop if successful
-            except ValueError as e:
-                print(e)
-                continue
-        # Create table and save enemy object to db
-        self.enemy.create_table()
-        self.enemy.save()
-
-        
-
         encounter_chance = random.random()
         if encounter_chance < 1.0:
             print(f"A {self.current_enemy} appeared!")
@@ -256,6 +253,13 @@ class Game:
 
     # Battle Code
 
+    def random_encounter(self):
+        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow]
+        random_enemy_type = random.choice(enemy_types)
+
+        random_enemy = random_enemy_type()
+
+        self.current_enemy = random_enemy
 
     def battle(self):
         if not self.player or not self.current_enemy:
@@ -287,7 +291,3 @@ class Game:
         attacker_damage = attacker.damage
         print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
         target.hp -= attacker_damage
-
-
-
-
