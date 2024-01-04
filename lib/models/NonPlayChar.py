@@ -11,10 +11,10 @@ class NonPlayableCharacter:
 
 class Casper(NonPlayableCharacter):
     def __init__(self):
-        self.name = "Ghost"
+        self.name = "Trader"
         self.inventory = [
-            Consumable.StaleBread(),
-            Consumable.StaleBread(),
-            Usable.Rope(),
-            Consumable.MysteriousLiquid(),
+            StaleBread(),
+            StaleBread(),
+            Rope(),
+            MysteriousLiquid(),
         ]
