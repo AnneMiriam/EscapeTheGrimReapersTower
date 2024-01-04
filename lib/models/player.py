@@ -1,4 +1,5 @@
 import re
+from lib.models.rooms import *
 from models.items import *
 from models.__init__ import CURSOR, CONN
 
@@ -13,14 +14,21 @@ class Player:
         self.inventory = []
         self.damage = 5
         self.victory = False
+        self.location = AtticRoom()
 
     def __repr__(self):
         return f"Current unfortunate soul: {self.name}" + f"Life remaining: {self.hp}"
 
     def print_inventory(self):
-        print("Inventory:")
-        for item in self.inventory:
-            print("*" + str(item))
+        if self.inventory:
+            print()
+            print("Inventory:")
+            for item in self.inventory:
+                print("*" + str(item))
+        else:
+            print()
+            print("Your pockets are empty, save for a bit of lint and some old crumbs.")
+            
 
     def add_to_inventory(self, item):
         self.inventory.append(item)
