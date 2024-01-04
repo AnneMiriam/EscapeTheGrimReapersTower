@@ -17,24 +17,43 @@ class Game:
         self.current_enemy = None
        
 
+    #  trading code
     def trade(self, consumer, seller):
         room = TradingGhost()
         seller = room.trader
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} HP".format(i, item, item.healing_value))
+
         while True:
-            user_input = input("Select your item or press q to exit >>")
-            if user_input in ["q"]:
+            for i, item in enumerate(seller.inventory, 1):
+                print("{}. {}".format(i, item))
+
+            user_input = input("Select your item or press q to exit >> ")
+
+            if user_input == "q":
                 Game.return_staircase(self)
                 break
-            else:
-                try:
-                    choice = int(user_input)
-                    exchange = seller.inventory[choice - 1]
-                    self.transaction(seller, consumer, exchange)
-                    print("Trade sealed in ethereal terms.")
-                except ValueError:
-                    print("Unacceptable selection!")
+
+            try:
+                choice = int(user_input)
+                if choice < 1 or choice > len(seller.inventory):
+                    raise ValueError("Unacceptable selection! Choose more wisely")
+
+                initial_hp = consumer.hp
+                exchange = seller.inventory[choice - 1]
+                self.transaction(seller, consumer, exchange)
+                hp_change = exchange.healing_value
+                consumer.hp = initial_hp + hp_change
+
+                hp_change_str = (
+                    f"({hp_change} HP)" if hp_change < 0 else f"(+{hp_change} HP)"
+                )
+
+                print(
+                    f"Trade sealed in ethereal terms. Your updated HP: {consumer.hp} ({hp_change_str}))"
+                )
+
+            except ValueError as e:
+                print(e)
+                continue
 
     def transaction(self, seller, consumer, item):
         if isinstance(consumer, Player) and hasattr(item, "healing_value"):
@@ -42,11 +61,17 @@ class Game:
                 print(
                     "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
                 )
-            return
-        seller.inventory.remove(item)
-        consumer.inventory.append(item)
-        consumer.update_health(item.healing_value)
-        print("Trade sealed in ethereal terms.")
+                return
+            seller.inventory.remove(item)
+            consumer.inventory.append(item)
+
+            if item.healing_value < 0:
+                print("Trade sealed in ethereal terms.")
+                print(f"Your updated HP: {consumer.hp} ({item.healing_value} HP)")
+            else:
+                consumer.hp += item.healing_value
+                print("Trade sealed in ethereal terms.")
+                print(f"Ypur updated HP: {consumer.hp} (+{item.healing_value})")
 
     def create_player(self):
         while True:
@@ -247,9 +272,10 @@ class Game:
         print()
         output_slow(room.intro_text())
         print("1. Trade \n2. Return to staircase")
-        choice = input("Would you like to test your fate? >>")
+        choice = input("Would you like to test your fate? >> ")
         if choice == "1":
-            print("Behold, these are the offerings for trade from beyond the veil.")
+            print()
+            print("Behold, these are the offerings for trade from beyond the veil:")
             self.trade(self.player, room.trader)
         if choice == "2":
             Game.return_staircase(self)
@@ -455,18 +481,4 @@ class Game:
         attacker_damage = attacker.damage
         print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
         target.hp -= attacker_damage
-
-    # trading code
-
-    def trading(self, player):
-        print("Would you like to test your fate? (t)rade or (q)uit")
-        user_input = input()
-        if user_input == "q":
-            Game.go_staircase(self)
-        elif user_input == "t":
-            print("Behold, these are the offerings for trade from beyond the veil.")
-            self.trade(player, self.trader)
-        else:
-            print("Unacceptable selection!")
-
 
