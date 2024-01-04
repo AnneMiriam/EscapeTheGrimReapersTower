@@ -97,18 +97,22 @@ class Game:
             self.current_enemy = random_enemy
         else:
             print("Invalid enemy data. Missing required attributes.")
-
+            
+    #START GAME and room navigation
     def start_game(self):
         room = AtticRoom()
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Window \n2. Door")
-        choice = input("Where will you go? >> ")
+        print("1. Go to window \n2. Go to door \n3. Check inventory")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_attic_window(self)
         if choice == "2":
             Game.go_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_attic_room(self)
 
     def go_attic_window(self):
         room = AtticRoomWindow()
@@ -116,9 +120,9 @@ class Game:
         output_slow(room.intro_text())
         print()
         print(
-            "1. Go back to the relative safety of the attic room \n2. Take your chances and leap"
+            "1. Go back to the relative safety of the attic room \n2. Take your chances and leap \n3. Check inventory"
         )
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.return_attic_room(self)
         if choice == "2":
@@ -128,18 +132,24 @@ class Game:
             )
             output_slower("GAME OVER")
             exit()
+        if choice == "3":
+            self.player.print_inventory()
+            Game.go_attic_window
 
     def return_attic_room(self):
         room = AtticRoom()
         print()
         output_slow(room.return_text())
         print()
-        print("1. Window \n2. Door")
-        choice = input("Where will you go? >> ")
+        print("1. Go to window \n2. Go to door \n3. Check inventory")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_attic_window(self)
         if choice == "2":
             Game.go_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_attic_room
 
     def go_staircase(self):
         room = StairCase()
@@ -147,10 +157,10 @@ class Game:
         output_slow(room.intro_text())
         print()
         print(
-            "1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room \n7. Meet the ghost"
+            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Meet the ghost \n8. Check inventory"
         )
 
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
 
         if choice == "1":
             Game.go_fourth_floor(self)
@@ -166,6 +176,9 @@ class Game:
             Game.return_attic_room(self)
         if choice == "7":
             Game.go_trading(self)
+        if choice == "8":
+            self.player.print_inventory()
+            Game.return_staircase(self)
 
     def return_staircase(self):
         room = StairCase()
@@ -173,9 +186,9 @@ class Game:
         output_slow(room.return_text())
         print()
         print(
-            "1. Fourth floor door \n2. Third floor door \n3. Second floor door \n4. First floor door \n5. Entryway \n6. Return to attic room"
+            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Check inventory"
         )
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_fourth_floor(self)
         if choice == "2":
@@ -186,9 +199,11 @@ class Game:
             Game.go_first_floor(self)
         if choice == "5":
             Game.go_entryway(self)
-
         if choice == "6":
             Game.return_attic_room(self)
+        if choice == "7":
+            self.player.print_inventory()
+            Game.return_staircase(self)
 
     def go_fourth_floor(self):
         room = FourthFloorRoom()
@@ -203,22 +218,28 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Return to the staircase")
-        choice = input("Where will you go? >> ")
+        print("1. Return to the staircase \n2.Check inventory")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.return_staircase(self)
+        if choice == "2":
+            self.player.print_inventory()
+            Game.go_fourth_floor(self)
 
     def go_third_floor(self):
         room = ThirdFloorRoom()
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Window \n2. Return to staircase")
-        choice = input("Where will you go? >> ")
+        print("1. Go to the window \n2. Return to staircase \n3. Check inventory")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_third_floor_window(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.go_third_floor(self)
 
     def go_trading(self):
         room = TradingGhost()
@@ -238,9 +259,9 @@ class Game:
         output_slow(room.intro_text())
         print()
         print(
-            "1. Go back to the relative safety of the room \n2. Take your chances and leap"
+            "1. Go back to the relative safety of the room \n2. Take your chances and leap \n3. Check inventory"
         )
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_third_floor(self)
         if choice == "2":
@@ -249,6 +270,9 @@ class Game:
                 "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
             )
             output_slower("GAME OVER")
+        if choice == "3":
+            self.player.print_inventory()
+            Game.go_third_floor_window(self)
 
     def go_second_floor(self):
         room = SecondFloorRoom()
@@ -256,7 +280,7 @@ class Game:
         output_slow(room.intro_text())
         print()
         print("1. Investigate desk \n2. Return to staircase \n3. Check Inventory")
-        choice = input("Where will you go? >> ")
+        choice = input("Whhat will you do? >> ")
         if choice == "1":
             print()
             output_slow(
@@ -282,10 +306,13 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Return to staircase")
-        choice = input("Where will you go? >> ")
+        print("1. Return to staircase \n2. Check inventory")
+        choice = input("What will you do? >> ")
         if choice == "1":
             Game.return_staircase(self)
+        if choice == "2":
+            self.player.print_inventory()
+            Game.go_first_floor(self)
 
     def go_entryway(self):
         room = EntryWay()
@@ -295,11 +322,11 @@ class Game:
         print(
             "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
         )
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             if any(isinstance(item, Key) for item in self.player.inventory):
                 print()
-                output_slow("You get out and win!")
+                output_slow("As you place your hand on the handle")
                 output_slower("YOU HAVE ESCAPED DEATH")
                 exit()
             else:
@@ -322,7 +349,7 @@ class Game:
         print(
             "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
         )
-        choice = input("Where will you go? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             if any(isinstance(item, Key) for item in self.player.inventory):
                 print()
@@ -414,4 +441,3 @@ class Game:
             self.trade(player, self.trader)
         else:
             print("Unacceptable selection!")
-
