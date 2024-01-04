@@ -158,9 +158,9 @@ class Game:
         if encounter_chance < 0.9:
             self.random_encounter()
 
-            if self.current_enemy:
-                print(f"A {self.current_enemy} appeared!")
-                self.battle()
+        if self.current_enemy:
+            print(f"A {self.current_enemy} appeared!")
+            self.battle()
         print()
         output_slow(room.intro_text())
         print()
@@ -210,6 +210,9 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
+
+    def go_first_floor(self):
+        room = FirstFloorRoom()
         encounter_chance = random.random()
         if encounter_chance < 1.0:
             print(f"A {self.current_enemy} appeared!")
@@ -217,9 +220,6 @@ class Game:
 
         if self.current_enemy:
             self.battle()
-
-    def go_first_floor(self):
-        room = FirstFloorRoom()
         print()
         output_slow(room.intro_text())
         print()
@@ -267,8 +267,6 @@ class Game:
         if not self.player or not self.current_enemy:
             print("Must be alive to battle")
             return
-
-        print(f"A {self.current_enemy} appeared!")
 
         while self.player.hp > 0 and self.current_enemy.hp > 0:
             print(f"{self.player.name}'s HP: {self.player.hp}")
