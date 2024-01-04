@@ -11,6 +11,8 @@ class Enemy:
         self.name = name
         self.hp = 5
         self.damage = 5
+        self.alive_text = "Something otherworldly has appeared."
+        self.dead_text = "The creature has gone back to it's realm."
 
     def __str__(self):
         return self.name
@@ -29,39 +31,29 @@ class Enemy:
         else:
             raise ValueError("Name must be a string.")
 
+    
     # @property
     # def hp(self):
     #     return self._hp
 
     # @hp.setter
     # def hp(self, hp):
-    #     if isinstance(hp, int) and hp >= 0:
+    #     if isinstance(hp, int):
+
     #         self._hp = hp
     #     else:
-    #         raise ValueError("HP must be a positive integer.")
+    #         raise ValueError("HP must be an integer.")
 
-    @property
-    def hp(self):
-        return self._hp
+    # @property
+    # def damage(self):
+    #     return self._damage
 
-    @hp.setter
-    def hp(self, hp):
-        if isinstance(hp, int):
-
-            self._hp = hp
-        else:
-            raise ValueError("HP must be an integer.")
-
-    @property
-    def damage(self):
-        return self._damage
-
-    @damage.setter
-    def damage(self, damage):
-        if isinstance(damage, int) and damage > 0:
-            self._damage = damage
-        else:
-            raise ValueError("Damage must be a positive integer.")
+    # @damage.setter
+    # def damage(self, damage):
+    #     if isinstance(damage, int) and damage > 0:
+    #         self._damage = damage
+    #     else:
+    #         raise ValueError("Damage must be a positive integer.")
 
     @classmethod
     def create_table(cls):
@@ -139,8 +131,10 @@ class Enemy:
 class GrimReaper(Enemy):
     def __init__(self):
         self.name = "Grim Reaper"
-        self.hp = 50
+        self.hp = 100
         self.damage = random.randint(10, 20)
+        self.alive_text = "You have run into the Grim Reaper!"
+        self.dead_text = "They are death! They cannot be killed!"
 
 
 class BlackCat(Enemy):
@@ -148,6 +142,8 @@ class BlackCat(Enemy):
         self.name = "Black Cat"
         self.hp = 45
         self.damage = 2
+        self.alive_text = "A Black Cat has crossed your path!"
+        self.dead_text = "Rude! It was just walking by!"
 
 
 class Poltergeist(Enemy):
@@ -155,6 +151,8 @@ class Poltergeist(Enemy):
         self.name = "Ghost"
         self.hp = 10
         self.damage = random.randint(5, 10)
+        self.alive_text = "You pissed off a Poltergeist!"
+        self.dead_text = "Your exorcism succeeded!"
 
 
 class BlackWidow(Enemy):
@@ -162,3 +160,5 @@ class BlackWidow(Enemy):
         self.name = "Black Wider Spider"
         self.hp = 8
         self.damage = 5
+        self.alive_text = "A Black Widow has bitten you."
+        self.dead_text = "You squished it."

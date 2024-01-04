@@ -5,7 +5,7 @@ from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
 from helpers import output_slow, output_slower
-from items import StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid
+from models.items import StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid
 
 
 class Game:
@@ -13,6 +13,18 @@ class Game:
         self.player = player
         self.enemy = enemy
         self.current_enemy = None
+        
+        def transaction(self, seller, consumer, item):
+            if item.healing_value > consumer.hp:
+                print(
+                "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
+                )
+                return
+            seller.inventory.remove(item)
+            consumer.inventory.append(item)
+            seller.hp += item.healing_value
+            consumer.hp -= item.healing_value
+            print("Trade sealed in ethereal terms.")
 
     def create_player(self):
         while True:
@@ -138,6 +150,14 @@ class Game:
 
     def return_staircase(self):
         room = StairCase()
+        # encounter code
+        encounter_chance = random.random()
+        if encounter_chance < 0.2:
+            self.random_encounter()
+
+        if self.current_enemy:
+            print(f"A {self.current_enemy} appeared!")
+            self.battle()
         print()
         output_slow(room.return_text())
         print()
@@ -155,7 +175,6 @@ class Game:
             Game.go_first_floor(self)
         if choice == "5":
             Game.go_entryway(self)
-
         if choice == "6":
             Game.return_attic_room(self)
 
@@ -182,11 +201,23 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Window \n2. Return to staircase")
+        print("1. Window \n2. You're exhausted: Take a nap on the bed \n3. Return to staircase")
         choice = input("Where will you go? >> ")
         if choice == "1":
             Game.go_third_floor_window(self)
         if choice == "2":
+            # encounter code
+            encounter_chance = random.random()
+            if encounter_chance < 0.5:
+                self.random_encounter()
+
+            if self.current_enemy:
+                print(f"A {self.current_enemy} appeared!")
+                self.battle()
+            print()
+            output_slow("What are you doing napping at a time like this!")            
+            Game.go_third_floor(self)
+        if choice == "3":
             Game.return_staircase(self)
 
     def go_trading(self):
@@ -299,7 +330,7 @@ class Game:
 
     # Battle Code
     def random_encounter(self):
-        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow, Enemy]
+        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow, Enemy.find_by_id(-1)]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
 
@@ -329,7 +360,7 @@ class Game:
                 print("Invalid choice. You must battle or flee...")
 
             if self.current_enemy.hp <= 0:
-                print(f"You defeated {self.current_enemy.name}!")
+                print(f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!")
                 break
 
             self.attack(self.current_enemy, self.player)
@@ -358,30 +389,6 @@ class Game:
         else:
             print("Unacceptable selection!")
 
-    def trade(self, consumer, seller):
-        seller.inventory = [StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid]
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} - {} HP".format(i, item.name, item.healing_value))
-        while True:
-            user_input = input("Select your item or press q to exit >>")
-            if user_input == "q":
-                Game.go_staircase(self)
-            else:
-                try:
-                    choice = int(user_input)
-                    exchange = seller.inventory[choice - 1]
-                    self.transaction(seller, consumer, exchange)
-                except ValueError:
-                    print("Unacceptable selection!")
+    
 
-    def transaction(self, seller, consumer, item):
-        if item.healing_value > consumer.hp:
-            print(
-                "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
-            )
-            return
-        seller.inventory.remove(item)
-        consumer.inventory.append(item)
-        seller.hp += item.healing_value
-        consumer.hp -= item.healing_value
-        print("Trade sealed in ethereal terms.")
+    
