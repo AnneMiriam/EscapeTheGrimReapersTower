@@ -1,5 +1,6 @@
 import random
 from models.Enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
+
 # from data.default_enemies import default_enemies
 from models.NonPlayChar import *
 from models.__init__ import CURSOR, CONN
@@ -11,7 +12,7 @@ class MapRoom:
 
     def intro_text(self):
         raise NotImplementedError("")
-    
+
     def return_text(self):
         raise NotImplementedError("")
 
@@ -22,18 +23,23 @@ class MapRoom:
 class AtticRoom(MapRoom):
     def intro_text(self):
         return """You take another look around the room. You can see that the window opens up onto a small balcony."""
+
     def return_text(self):
         return """The same cold, empty room you started in. On one side stands a plain wooden door. On the other, a window that looks as if it's about to be blown off its hinges."""
 
+
 class AtticRoomWindow(MapRoom):
-    def intro_text(self): 
+    def intro_text(self):
         return """The window shakes violently as you approach, the wind outside whipping up into a frenzy. The balcony is soaking wet from the rain, and as you peer over the edge you realize you cannot see the ground. You can, however, see another small balcony a few floors below you."""
+
 
 class StairCase(MapRoom):
     def intro_text(self):
         return """The hinges of the door squeal as you open it, their infrequent use and lack of care made evident. Before you is a staircase, its walls and steps carved from the same stone as the attic room. It curves as it descends, spiralling ever downward into the great unknown.\nAs you descend, you come upon a door. It appears to be unlocked. You count three more doors before the staircase opens at the bottom, a soft glow eminating from the room awaiting you there."""
+
     def return_text(self):
         return """You return to the staircase. Where else can you go?"""
+
 
 class FourthFloorRoom(MapRoom):
     def intro_text(self):
@@ -44,6 +50,7 @@ class ThirdFloorRoom(MapRoom):
     def intro_text(self):
         return """You find another small room. Like the attic room, this one has a window that leads out to a small balcony.\nThe room is otherwise bare, save for the candle wax pooling in the center of the floor beneath the lantern.
         """
+
 
 class ThirdFloorWindow(MapRoom):
     def intro_text(self):
@@ -101,7 +108,7 @@ class EnemyAndFriends(MapRoom):
             self.enemy = BlackWidow()
             self.alive_text = "A Black Widow has bitten you."
             self.dead_text = "You squished it."
-            
+
         elif r < 0.60:
             self.enemy = BlackCat()
             self.alive_text = "A Black Cat has crossed your path!"
@@ -122,7 +129,6 @@ class EnemyAndFriends(MapRoom):
     def intro_text(self):
         text = self.alive_text if self.enemy.is_alive() else self.dead_text
         return text
-      
 
     def modify_player(self, player):
         if self.enemy.is_alive():
@@ -153,40 +159,39 @@ class TradingGhost(MapRoom):
 
     def __init__(self):
         self.trader = Casper()
-        super().__init__(self)
 
-    def trade(self, consumer, seller):
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} - {} HP".format(i, item.name, item.healing_value))
-        while True:
-            user_input = input("Select your item or press q to exit")
-            if user_input in ["q"]:
-                return
-            else:
-                try:
-                    choice = int(user_input)
-                    exchange = seller.inventory[choice - 1]
-                    self.transaction(seller, consumer, exchange)
-                except ValueError:
-                    print("Unacceptable selection!")
+    # def trade(self, consumer, seller):
+    #     for i, item in enumerate(seller.inventory, 1):
+    #         print("{}. {} - {} HP".format(i, item.name, item.healing_value))
+    #     while True:
+    #         user_input = input("Select your item or press q to exit")
+    #         if user_input in ["q"]:
+    #             return
+    #         else:
+    #             try:
+    #                 choice = int(user_input)
+    #                 exchange = seller.inventory[choice - 1]
+    #                 self.transaction(seller, consumer, exchange)
+    #             except ValueError:
+    #                 print("Unacceptable selection!")
 
-    def transaction(self, seller, consumer, item):
-        if item.healing_value > consumer.hp:
-            print("Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger.")
-            return
-        seller.inventory.remove(item)
-        consumer.inventory.append(item)
-        seller.hp = seller.hp + item.healing_value
-        consumer.hp = seller.hp - item.healing_value
-        print("Trade sealed in ethereal terms.")
+    # def transaction(self, seller, consumer, item):
+    #     if item.healing_value > consumer.hp:
+    #         print("Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger.")
+    #         return
+    #     seller.inventory.remove(item)
+    #     consumer.inventory.append(item)
+    #     seller.hp = seller.hp + item.healing_value
+    #     consumer.hp = seller.hp - item.healing_value
+    #     print("Trade sealed in ethereal terms.")
 
-    def trading(self, player):
-        print("Would you like to test your fate? (t)rade or (q)uit")
-        user_input = input()
-        if user_input in ["q"]:
-            return
-        elif user_input in ["t"]:
-            print("Behold, these are the offerings for trade from beyond the veil.")
-            self.trade(consumer=player, seller=self.trader)
-        else:
-            print("Unacceptable selection!")
+    # def trading(self, player):
+    #     print("Would you like to test your fate? (t)rade or (q)uit")
+    #     user_input = input()
+    #     if user_input in ["q"]:
+    #         return
+    #     elif user_input in ["t"]:
+    #         print("Behold, these are the offerings for trade from beyond the veil.")
+    #         self.trade(consumer=player, seller=self.trader)
+    #     else:
+    #         print("Unacceptable selection!")
