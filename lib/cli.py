@@ -1,15 +1,10 @@
 # lib/cli.py
 
-from helpers import (
-    display_intro,
-    exit_program,
-    output_slower
-)
+from helpers import display_intro, exit_program, output_slower
 from models.game import Game
 
 
 def main():
-
     while True:
         print()
         print()
@@ -23,7 +18,7 @@ def main():
             exit_program()
         elif choice == "1":
             print("-" * 50)
-                # Start new game session. Initialize game with player and pass onto Game.
+            # Start new game session. Initialize game with player and pass onto Game.
             game = Game(None, None)
             game.create_player()
             game.start_game()
@@ -52,6 +47,7 @@ def menu():
     print("0. Exit the program")
     print("1. Take a breath - remember who you are")
     print("2. Extra Challenge - create an enemy")
+
 
 def new_menu():
     print("What do you want to do?")

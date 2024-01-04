@@ -67,11 +67,11 @@ class FirstFloorRoom(MapRoom):
     def intro_text(self):
         return """The smell of rot greets you as you open the door. Crates of what must have once been fruit are stacked haphazardly in the corners, sticky liquid seeping out from the edges. Shelves filled with wine bottles, all either smashed or lying open on their side, line the walls. The cracked window on the far side of the room is doing nothing to help the smell. Or maybe it is, although you cannot imagine it getting worse than this.
         """
-        
+
+
 class FirstFloorWindow(MapRoom):
     def intro_text(self):
         return """The wind seems to be less fierce down here. The rain, also, seems lighter. It's still dark, but you think you can finally see the bottom of the tower. Above you, you see the balcony that must lead to the third floor room."""
-
 
 
 class WindowOption(MapRoom):
@@ -83,8 +83,10 @@ class EntryWay(MapRoom):
     def intro_text(self):
         return """You reach the bottom of the stairs and are greeted by a yawning entryway, its high walls lined with iron lanterns holding flickering candles. Before you are a set of heavy double doors, stained a rich reddish-brown, intricately carved with scenes of mortals fleeing in terror from a skeletal figure in billowing robes wielding a scythe. The path that leads to the doors is lined with statues of similar skeletal figures.\nThough they have no eyes, you could swear you can feel them watching you.
         """
+
     def return_text(self):
         return """The grandeur of the entryway is matched only by its eeriness. The double doors stand before you, silent and firm, and you can't help but empathize with the mortals carved on their faces."""
+
 
 class VictoryIsYours(MapRoom):
     def intro_text(self):
@@ -146,45 +148,9 @@ class VictoryIsYours(MapRoom):
 
 
 class TradingGhost(MapRoom):
+    def __init__(self):
+        self.trader = Casper()
+
     def intro_text(self):
         return """With a start, you realize you are not alone.\nIn the center of the room floats an old woman, her translucent feet hovering just an inch off the ground. Her bony hands grip the sides of a knitted shawl that she seems to be appraising. As you approach, she looks up at you with a warm smile. \n"Oh! Hello dearie," she says. "It's been a long time since I had a visitor! My name is Margaret and I am the purveyor of the finest goods this tower has to offer. Of course," she chuckles lightly, "that isn't always saying much. I would be happy to part with any of my wares for the right price!" \nHer smile droops a bit, and her eyes take on a pitying look. \n"However, I must warn you, my prices may not be to your liking. I can only deal in life, you see. It's the only thing with real value around here. But, if you're willing to part with just a sip of your vitality, I can give you anything you please, anything at all!" \nShe looks at you expectantly. 
         """
-
-    def __init__(self):
-        self.name = Casper()
-
-    # def trade(self, consumer, seller):
-    #     for i, item in enumerate(seller.inventory, 1):
-    #         print("{}. {} - {} HP".format(i, item.name, item.healing_value))
-    #     while True:
-    #         user_input = input("Select your item or press q to exit")
-    #         if user_input in ["q"]:
-    #             return
-    #         else:
-    #             try:
-    #                 choice = int(user_input)
-    #                 exchange = seller.inventory[choice - 1]
-    #                 self.transaction(seller, consumer, exchange)
-    #             except ValueError:
-    #                 print("Unacceptable selection!")
-
-    # def transaction(self, seller, consumer, item):
-    #     if item.healing_value > consumer.hp:
-    #         print("Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger.")
-    #         return
-    #     seller.inventory.remove(item)
-    #     consumer.inventory.append(item)
-    #     seller.hp = seller.hp + item.healing_value
-    #     consumer.hp = seller.hp - item.healing_value
-    #     print("Trade sealed in ethereal terms.")
-
-    # def trading(self, player):
-    #     print("Would you like to test your fate? (t)rade or (q)uit")
-    #     user_input = input()
-    #     if user_input in ["q"]:
-    #         return
-    #     elif user_input in ["t"]:
-    #         print("Behold, these are the offerings for trade from beyond the veil.")
-    #         self.trade(consumer=player, seller=self.trader)
-    #     else:
-    #         print("Unacceptable selection!")

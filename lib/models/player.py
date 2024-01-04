@@ -1,5 +1,5 @@
 import re
-from lib.models.rooms import *
+from models.rooms import *
 from models.items import *
 from models.__init__ import CURSOR, CONN
 
@@ -28,7 +28,6 @@ class Player:
         else:
             print()
             print("Your pockets are empty, save for a bit of lint and some old crumbs.")
-            
 
     def add_to_inventory(self, item):
         self.inventory.append(item)
