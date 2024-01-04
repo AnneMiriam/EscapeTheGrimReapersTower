@@ -85,10 +85,10 @@ class EnemyAndFriends(MapRoom):
     def __init__(self):
         r = random.random()
 
-        if r < 0.10:
-            random_enemy = Enemy.find_by_id(-1)
-            if random_enemy:
-                self.enemy = random_enemy
+        if r < 0.40:
+            randenemy = Enemy.find_by_id(-1)
+            if randenemy:
+                self.enemy = randenemy
                 self.alive_text = "Something otherworldly has appeared."
                 self.dead_text = "The creature has gone back to it's realm."
             else:
