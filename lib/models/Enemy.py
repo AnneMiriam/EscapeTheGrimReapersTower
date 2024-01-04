@@ -146,7 +146,7 @@ class GrimReaper(Enemy):
 class BlackCat(Enemy):
     def __init__(self):
         self.name = "Black Cat"
-        self.hp = 9
+        self.hp = 45
         self.damage = 2
 
 

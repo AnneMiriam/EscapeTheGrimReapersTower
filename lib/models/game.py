@@ -47,7 +47,8 @@ class Game:
         self.enemy.save()
 
     def random_encounter(self):
-        enemy_data = random.choice(default_enemies)
+        # enemy_data = random.choice(default_enemies)
+        enemy_data = EnemyAndFriends()
         # Create an Enemy instance with random attributes
 
         if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
