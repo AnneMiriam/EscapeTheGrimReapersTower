@@ -71,7 +71,8 @@ class EntryWay(MapRoom):
     def intro_text(self):
         return """You reach the bottom of the stairs and are greeted by a yawning entryway, its high walls lined with iron lanterns holding flickering candles. Before you are a set of heavy double doors, stained a rich reddish-brown, intricately carved with scenes of mortals fleeing in terror from a skeletal figure in billowing robes wielding a scythe. The path that leads to the doors is lined with statues of similar skeletal figures.\nThough they have no eyes, you could swear you can feel them watching you.
         """
-
+    def return_text(self):
+        return """The grandeur of the entryway is matched only by its eeriness. The double doors stand before you, silent and firm, and you can't help but empathize with the mortals carved on their faces."""
 
 class VictoryIsYours(MapRoom):
     def intro_text(self):
