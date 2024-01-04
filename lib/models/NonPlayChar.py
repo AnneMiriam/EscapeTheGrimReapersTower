@@ -14,7 +14,6 @@ class Casper(NonPlayableCharacter):
         self.name = "Trader"
         self.inventory = [
             StaleBread(),
-            StaleBread(),
             Rope(),
             MysteriousLiquid(),
         ]

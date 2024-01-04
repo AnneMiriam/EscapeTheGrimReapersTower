@@ -5,6 +5,7 @@ from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
 from helpers import output_slow, output_slower
+from items import StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid
 
 
 class Game:
@@ -47,10 +48,9 @@ class Game:
         self.enemy.save()
 
     def random_encounter(self):
-        # enemy_data = random.choice(default_enemies)
-        enemy_data = EnemyAndFriends()
+        enemy_data = random.choice(default_enemies)
+        # enemy_data = EnemyAndFriends()
         # Create an Enemy instance with random attributes
-
         if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
             random_enemy = Enemy(
                 hp=enemy_data["hp"],
@@ -198,7 +198,7 @@ class Game:
         if choice == "1":
             self.trade(self.player, room.trader)
         if choice == "2":
-            Game.return_staircase
+            Game.return_staircase(self)
 
     def go_third_floor_window(self):
         room = ThirdFloorWindow()
@@ -299,8 +299,9 @@ class Game:
 
     # Battle Code
     def random_encounter(self):
-        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow]
+        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow, Enemy]
         random_enemy_type = random.choice(enemy_types)
+        # random_enemy_type = EnemyAndFriends(enemy_types)
 
         random_enemy = random_enemy_type()
 
@@ -316,9 +317,9 @@ class Game:
             print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
             player_choice = input("(a)ttack or (r)un >> ")
-            if player_choice in ["a"]:
+            if player_choice == "a":
                 self.attack(self.player, self.current_enemy)
-            if player_choice in ["r"]:
+            if player_choice == "r":
                 print()
                 output_slow(
                     "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
@@ -349,21 +350,22 @@ class Game:
     def trading(self, player):
         print("Would you like to test your fate? (t)rade or (q)uit")
         user_input = input()
-        if user_input in ["q"]:
-            return
-        elif user_input in ["t"]:
+        if user_input == "q":
+            Game.go_staircase(self)
+        elif user_input == "t":
             print("Behold, these are the offerings for trade from beyond the veil.")
             self.trade(player, self.trader)
         else:
             print("Unacceptable selection!")
 
     def trade(self, consumer, seller):
+        seller.inventory = [StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid]
         for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} - {} HP")
+            print("{}. {} - {} HP".format(i, item.name, item.healing_value))
         while True:
             user_input = input("Select your item or press q to exit >>")
-            if user_input in ["q"]:
-                return
+            if user_input == "q":
+                Game.go_staircase(self)
             else:
                 try:
                     choice = int(user_input)

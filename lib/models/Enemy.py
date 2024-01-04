@@ -138,7 +138,7 @@ class Enemy:
 
 class GrimReaper(Enemy):
     def __init__(self):
-        self.name = "The Grim Reaper"
+        self.name = "Grim Reaper"
         self.hp = 50
         self.damage = random.randint(10, 20)
 
