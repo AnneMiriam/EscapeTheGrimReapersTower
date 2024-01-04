@@ -1,6 +1,7 @@
 import random
 from models.Enemy import Enemy
 from data.default_enemies import default_enemies
+from models.items import *
 from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
@@ -12,6 +13,37 @@ class Game:
         self.player = player
         self.enemy = enemy
         self.current_enemy = None
+
+    def trade(self, consumer, seller):
+        room = TradingGhost()
+        seller = room.trader
+        for i, item in enumerate(seller.inventory, 1):
+            print("{}. {} HP".format(i, item, item.healing_value))
+        while True:
+            user_input = input("Select your item or press q to exit >>")
+            if user_input in ["q"]:
+                Game.return_staircase(self)
+                break
+            else:
+                try:
+                    choice = int(user_input)
+                    exchange = seller.inventory[choice - 1]
+                    self.transaction(seller, consumer, exchange)
+                    print("Trade sealed in ethereal terms.")
+                except ValueError:
+                    print("Unacceptable selection!")
+
+    def transaction(self, seller, consumer, item):
+        if isinstance(consumer, Player) and hasattr(item, "healing_value"):
+            if item.healing_value > consumer.hp:
+                print(
+                    "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
+                )
+            return
+        seller.inventory.remove(item)
+        consumer.inventory.append(item)
+        consumer.update_health(item.healing_value)
+        print("Trade sealed in ethereal terms.")
 
     def create_player(self):
         while True:
@@ -63,8 +95,6 @@ class Game:
             self.current_enemy = random_enemy
         else:
             print("Invalid enemy data. Missing required attributes.")
-
-     
 
     def start_game(self):
         room = AtticRoom()
@@ -192,9 +222,10 @@ class Game:
         room = TradingGhost()
         print()
         output_slow(room.intro_text())
-        print("1.Trade \n2. Return to staircase")
-        choice = input("What would you like to do? >>")
+        print("1. Trade \n2. Return to staircase")
+        choice = input("Would you like to test your fate? >>")
         if choice == "1":
+            print("Behold, these are the offerings for trade from beyond the veil.")
             self.trade(self.player, room.trader)
         if choice == "2":
             Game.return_staircase
@@ -355,30 +386,3 @@ class Game:
             self.trade(player, self.trader)
         else:
             print("Unacceptable selection!")
-
-    def trade(self, consumer, seller):
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} - {} HP")
-        while True:
-            user_input = input("Select your item or press q to exit >>")
-            if user_input in ["q"]:
-                return
-            else:
-                try:
-                    choice = int(user_input)
-                    exchange = seller.inventory[choice - 1]
-                    self.transaction(seller, consumer, exchange)
-                except ValueError:
-                    print("Unacceptable selection!")
-
-    def transaction(self, seller, consumer, item):
-        if item.healing_value > consumer.hp:
-            print(
-                "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
-            )
-            return
-        seller.inventory.remove(item)
-        consumer.inventory.append(item)
-        seller.hp += item.healing_value
-        consumer.hp -= item.healing_value
-        print("Trade sealed in ethereal terms.")
