@@ -49,17 +49,14 @@ class Game:
     def random_encounter(self):
         enemy_data = random.choice(default_enemies)
         # Create an Enemy instance with random attributes
-        if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
-            random_enemy = Enemy(
-                hp=enemy_data["hp"], damage=enemy_data["damage"], name=enemy_data["name"]
-            )
-            # Save the enemy to the database
-            random_enemy.create_table()
-            random_enemy.save()
-            # Set the current_enemy to the randomly encountered enemy
-            self.current_enemy = random_enemy
-        else:
-            print('Invalid enemy data. Missing required attributes.')
+        random_enemy = Enemy(
+            hp=enemy_data["hp"], damage=enemy_data["damage"], name=enemy_data["name"]
+        )
+        # Save the enemy to the database
+        random_enemy.create_table()
+        random_enemy.save()
+        # Set the current_enemy to the randomly encountered enemy
+        self.current_enemy = random_enemy
 
     def start_game(self):
         room = AtticRoom()
@@ -207,7 +204,11 @@ class Game:
         print("1. Investigate desk \n2. Return to staircase")
         choice = input("Where will you go? >> ")
         if choice == "1":
-            pass
+            print()
+            output_slow(
+                "You open the drawer. Not much stands out to you at first - a couple of papers, some old letters maybe - but as you sift through the contents you find a large iron skeleton key. This may come in handy."
+            )
+            Game.go_second_floor(self)
         if choice == "2":
             Game.return_staircase(self)
         encounter_chance = random.random()
@@ -236,7 +237,27 @@ class Game:
         print("1.Try your luck with the front door \n2. Return to staircase")
         choice = input("Where will you go? >> ")
         if choice == "1":
-            pass
+            print()
+            output_slow(
+                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+            )
+            Game.return_entryway(self)
+        if choice == "2":
+            Game.return_staircase(self)
+
+    def return_entryway(self):
+        room = EntryWay()
+        print()
+        output_slow(room.return_text())
+        print()
+        print("1.Try your luck with the front door \n2. Return to staircase")
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            print()
+            output_slow(
+                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+            )
+            Game.return_entryway(self)
         if choice == "2":
             Game.return_staircase(self)
 
@@ -274,11 +295,17 @@ class Game:
             print(f"{self.player.name}'s HP: {self.player.hp}")
             print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
-            player_choice = input("Press 'a' to attack:")
+            player_choice = input("(a)ttack or (r)un >> ")
             if player_choice in ["a"]:
                 self.attack(self.player, self.current_enemy)
+            if player_choice in ["r"]:
+                print()
+                output_slow(
+                    "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
+                )
+                Game.return_attic_room(self)
             else:
-                print("Invalid choice. You must battle")
+                print("Invalid choice. You must battle or flee...")
 
             if self.current_enemy.hp <= 0:
                 print(f"You defeated {self.current_enemy.name}!")
@@ -286,8 +313,10 @@ class Game:
 
             self.attack(self.current_enemy, self.player)
             if self.player.hp <= 0:
-                print("You have become another soul within the tower")
-                break
+                print()
+                output_slow("You have become another soul within the tower")
+                output_slower("GAME OVER")
+                exit()
 
     def attack(self, attacker, target):
         attacker_damage = attacker.damage

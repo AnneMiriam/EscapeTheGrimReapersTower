@@ -5,13 +5,13 @@ import random
 
 class Enemy:
     ALL = {}
-    
+
     def __init__(self, name=None, id=None):
         self.id = id
         self.name = name
         self.hp = 5
         self.damage = 5
-        
+
     def __str__(self):
         return self.name
 
@@ -29,16 +29,27 @@ class Enemy:
         else:
             raise ValueError("Name must be a string.")
 
+    # @property
+    # def hp(self):
+    #     return self._hp
+
+    # @hp.setter
+    # def hp(self, hp):
+    #     if isinstance(hp, int) and hp >= 0:
+    #         self._hp = hp
+    #     else:
+    #         raise ValueError("HP must be a positive integer.")
+
     @property
     def hp(self):
         return self._hp
 
     @hp.setter
     def hp(self, hp):
-        if isinstance(hp, int) and hp >= 0:
+        if isinstance(hp, int):
             self._hp = hp
         else:
-            raise ValueError("HP must be a positive integer.")
+            raise ValueError("HP must be an integer.")
 
     @property
     def damage(self):
@@ -67,20 +78,14 @@ class Enemy:
         sql = """DROP TABLE IF EXISTS enemies"""
         CURSOR.execute(sql)
         CONN.commit()
-        
-    
 
     def save(self):
         sql = """INSERT INTO enemies (name, hp, damage)
                  VALUES (?, ?, ?)"""
-        CURSOR.execute(sql, (
-                            self.name, self.hp, self.damage
-                            )
-                        )
+        CURSOR.execute(sql, (self.name, self.hp, self.damage))
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).ALL[self.id] = self
-        
 
     def update(self):
         sql = """UPDATE enemies
@@ -95,10 +100,10 @@ class Enemy:
         CONN.commit()
         del type(self).ALL[self.id]
         self.id = None
-        
+
     @classmethod
     def create(cls, name, hp, damage):
-        """ Initialize a new Enemy instance and save the object to the database """
+        """Initialize a new Enemy instance and save the object to the database"""
         enemy = cls(name, hp, damage)
         enemy.save()
         return enemy
@@ -130,25 +135,27 @@ class Enemy:
         return cls.instance_from_db(row) if row else None
 
 
-    
 class GrimReaper(Enemy):
     def __init__(self):
         self.name = "The Grim Reaper"
         self.hp = 50
         self.damage = random.randint(10, 20)
-        
+
+
 class BlackCat(Enemy):
     def __init__(self):
         self.name = "Black Cat"
         self.hp = 9
         self.damage = 2
-        
+
+
 class Poltergeist(Enemy):
     def __init__(self):
         self.name = "Ghost"
         self.hp = 10
         self.damage = random.randint(5, 10)
-        
+
+
 class BlackWidow(Enemy):
     def __init__(self):
         self.name = "Black Wider Spider"
