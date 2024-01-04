@@ -7,6 +7,7 @@ from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
 from helpers import output_slow, output_slower
+from models.items import StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid
 
 
 class Game:
@@ -14,25 +15,45 @@ class Game:
         self.player = player
         self.enemy = enemy
         self.current_enemy = None
+       
 
+    #  trading code
     def trade(self, consumer, seller):
         room = TradingGhost()
         seller = room.trader
-        for i, item in enumerate(seller.inventory, 1):
-            print("{}. {} HP".format(i, item, item.healing_value))
+
         while True:
-            user_input = input("Select your item or press q to exit >>")
-            if user_input in ["q"]:
+            for i, item in enumerate(seller.inventory, 1):
+                print("{}. {}".format(i, item))
+
+            user_input = input("Select your item or press q to exit >> ")
+
+            if user_input == "q":
                 Game.return_staircase(self)
                 break
-            else:
-                try:
-                    choice = int(user_input)
-                    exchange = seller.inventory[choice - 1]
-                    self.transaction(seller, consumer, exchange)
-                    print("Trade sealed in ethereal terms.")
-                except ValueError:
-                    print("Unacceptable selection!")
+
+            try:
+                choice = int(user_input)
+                if choice < 1 or choice > len(seller.inventory):
+                    raise ValueError("Unacceptable selection! Choose more wisely")
+
+                initial_hp = consumer.hp
+                exchange = seller.inventory[choice - 1]
+                self.transaction(seller, consumer, exchange)
+                hp_change = exchange.healing_value
+                consumer.hp = initial_hp + hp_change
+
+                hp_change_str = (
+                    f"({hp_change} HP)" if hp_change < 0 else f"(+{hp_change} HP)"
+                )
+
+                print(
+                    f"Trade sealed in ethereal terms. Your updated HP: {consumer.hp} ({hp_change_str}))"
+                )
+
+            except ValueError as e:
+                print(e)
+                continue
 
     def transaction(self, seller, consumer, item):
         if isinstance(consumer, Player) and hasattr(item, "healing_value"):
@@ -40,11 +61,17 @@ class Game:
                 print(
                     "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
                 )
-            return
-        seller.inventory.remove(item)
-        consumer.inventory.append(item)
-        consumer.update_health(item.healing_value)
-        print("Trade sealed in ethereal terms.")
+                return
+            seller.inventory.remove(item)
+            consumer.inventory.append(item)
+
+            if item.healing_value < 0:
+                print("Trade sealed in ethereal terms.")
+                print(f"Your updated HP: {consumer.hp} ({item.healing_value} HP)")
+            else:
+                consumer.hp += item.healing_value
+                print("Trade sealed in ethereal terms.")
+                print(f"Ypur updated HP: {consumer.hp} (+{item.healing_value})")
 
     def create_player(self):
         while True:
@@ -80,10 +107,8 @@ class Game:
         self.enemy.save()
 
     def random_encounter(self):
-        # enemy_data = random.choice(default_enemies)
-        enemy_data = EnemyAndFriends()
+        enemy_data = random.choice(default_enemies)
         # Create an Enemy instance with random attributes
-
         if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
             random_enemy = Enemy(
                 hp=enemy_data["hp"],
@@ -182,6 +207,15 @@ class Game:
 
     def return_staircase(self):
         room = StairCase()
+        # encounter code
+        encounter_chance = random.random()
+        print(f"Encounter chance: {encounter_chance}")
+        if encounter_chance < 0.2:
+            self.random_encounter()
+
+        if self.current_enemy:
+            print(f"{self.current_enemy.alive_text}")
+            self.battle()
         print()
         output_slow(room.return_text())
         print()
@@ -209,11 +243,12 @@ class Game:
         room = FourthFloorRoom()
         # encounter code
         encounter_chance = random.random()
+        print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 0.9:
             self.random_encounter()
 
         if self.current_enemy:
-            print(f"A {self.current_enemy} appeared!")
+            print(f"{self.current_enemy.alive_text}")
             self.battle()
         print()
         output_slow(room.intro_text())
@@ -231,13 +266,26 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Go to the window \n2. Return to staircase \n3. Check inventory")
+        print("1. Go to the window \n2. You're exhausted: Take a nap on the bed \n3. Return to staircase \n4. Check inventory")
         choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_third_floor_window(self)
         if choice == "2":
-            Game.return_staircase(self)
+            # encounter code
+            encounter_chance = random.random()
+            print(f"Encounter chance: {encounter_chance}")
+            if encounter_chance < 0.3:
+                self.random_encounter()
+
+            if self.current_enemy:
+                print(f"{self.current_enemy.alive_text}")
+                self.battle()
+            print()
+            output_slow("What are you doing napping at a time like this!")            
+            Game.go_third_floor(self)
         if choice == "3":
+            Game.return_staircase(self)
+        if choice == "4":
             self.player.print_inventory()
             Game.go_third_floor(self)
 
@@ -246,12 +294,13 @@ class Game:
         print()
         output_slow(room.intro_text())
         print("1. Trade \n2. Return to staircase")
-        choice = input("Would you like to test your fate? >>")
+        choice = input("Would you like to test your fate? >> ")
         if choice == "1":
-            print("Behold, these are the offerings for trade from beyond the veil.")
+            print()
+            print("Behold, these are the offerings for trade from beyond the veil:")
             self.trade(self.player, room.trader)
         if choice == "2":
-            Game.return_staircase
+            Game.return_staircase(self)
 
     def go_third_floor_window(self):
         room = ThirdFloorWindow()
@@ -293,24 +342,53 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.go_second_floor(self)
+            
+    def go_first_floor_window(self):
+        room = FirstFloorWindow()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print(
+            "1. Go back to the relative safety of the room \n2. Take your chances and leap"
+        )
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.go_first_floor(self)
+        if choice == "2":
+            random_fate = random.random()
+            print(f"Random fate: {random_fate}")
+            if random_fate < 0.5:
+                print()
+                output_slow("You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!")
+                output_slower("YOU HAVE ESCAPED DEATH! YOU WIN!")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "As you step onto the railing you loose your footing on the slippery metal, you know you made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
+                )
+                output_slower("GAME OVER")
 
     def go_first_floor(self):
         room = FirstFloorRoom()
-        encounter_chance = random.random()
+        encounter_chance = round(random.random(), 1)
+        print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 0.5:
             self.random_encounter()
 
         if self.current_enemy:
-            print(f"A {self.current_enemy} appeared!")
+            print(f"{self.current_enemy.alive_text}")
             self.battle()
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Return to staircase \n2. Check inventory")
+        print("1.Go to the window \n2. Return to staircase \n3. Check inventory")
         choice = input("What will you do? >> ")
         if choice == "1":
-            Game.return_staircase(self)
+            Game.go_first_floor_window(self)
         if choice == "2":
+            Game.return_staircase(self)
+        if choice == "3":
             self.player.print_inventory()
             Game.go_first_floor(self)
 
@@ -384,8 +462,9 @@ class Game:
 
     # Battle Code
     def random_encounter(self):
-        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow]
+        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow, Enemy.find_by_id(-1)]
         random_enemy_type = random.choice(enemy_types)
+        # random_enemy_type = EnemyAndFriends(enemy_types)
 
         random_enemy = random_enemy_type()
 
@@ -401,9 +480,9 @@ class Game:
             print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
             player_choice = input("(a)ttack or (r)un >> ")
-            if player_choice in ["a"]:
+            if player_choice == "a":
                 self.attack(self.player, self.current_enemy)
-            if player_choice in ["r"]:
+            if player_choice == "r":
                 print()
                 output_slow(
                     "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
@@ -413,7 +492,7 @@ class Game:
                 print("Invalid choice. You must battle or flee...")
 
             if self.current_enemy.hp <= 0:
-                print(f"You defeated {self.current_enemy.name}!")
+                print(f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!")
                 break
 
             self.attack(self.current_enemy, self.player)
@@ -429,15 +508,3 @@ class Game:
         print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
         target.hp -= attacker_damage
 
-    # trading code
-
-    def trading(self, player):
-        print("Would you like to test your fate? (t)rade or (q)uit")
-        user_input = input()
-        if user_input in ["q"]:
-            return
-        elif user_input in ["t"]:
-            print("Behold, these are the offerings for trade from beyond the veil.")
-            self.trade(player, self.trader)
-        else:
-            print("Unacceptable selection!")
