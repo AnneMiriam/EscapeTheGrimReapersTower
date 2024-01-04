@@ -21,7 +21,7 @@ class Player:
         print("Inventory:")
         for item in self.inventory:
             print("*" + str(item))
-            
+
     def add_to_inventory(self, item):
         self.inventory.append(item)
 

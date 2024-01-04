@@ -3,14 +3,14 @@ class Consumable:
         raise NotImplementedError("Do not create raw consumable objects.")
 
     def __str__(self):
-        return "{} (+{} HP)".format(self.name, self.healing_value)
+        return "{} ({} HP)".format(self.name, self.healing_value)
 
 
 class StaleBread(Consumable):
     def __init__(self):
         self.name = "Stale bread"
         self.description = "The bread is old and hard, but still edible - you wonder how long it's been there."
-        self.healing_value = 5
+        self.healing_value = +5
 
 
 class QuestionableLiquid(Consumable):
@@ -31,7 +31,7 @@ class MysteriousLiquid(Consumable):
     def __init__(self):
         self.name = "Mysterious liquid"
         self.description = "A vial filled with a golden liquid with an almost iridescent sheen to it. It smells a bit like caramel."
-        self.healing_value = 5
+        self.healing_value = +5
 
 
 class Usable:
@@ -46,7 +46,8 @@ class Rope(Usable):
     def __init__(self):
         self.name = "Rope"
         self.description = "A long, woven rope"
-        
+
+
 class Key(Usable):
     def __init__(self):
         self.name = "Key"
