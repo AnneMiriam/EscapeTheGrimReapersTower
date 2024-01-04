@@ -51,95 +51,18 @@ pipenv shell
 
 ## Generating Your CLI
 
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
+A command line interface(CLI) is, simply put, an interactive script and prompts the user and performs operations based on user input.
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+Enter in `python lib/cli.py` to get started!
 
-```py
-# lib/cli.py
-
-from helpers import (
-    exit_program,
-    helper_1
-)
-
-
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
-
-
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-The helper functions are located in `lib/helpers.py`:
-
-```py
-# lib/helpers.py
-
-def helper_1():
-    print("Performing useful function#1.")
-
-
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
-
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
-
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
-
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
-
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
-
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
-
-- User interface
-- Data persistence
-- Problem domain rules and logic
 
 ---
+### How the Game Works
 
-## Updating README.md
-
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
-
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
+The above command will display your introduction to the game. Once loaded, you will have 3 options to to proceed. 0 will exit the game, 1 will start the game, and 2 will take you to a form for creating a new enemy.
+Choosing to create an enemy will allow you to access the create_enemy function of the Game class. After you create an enemy it will take you to a new menu, that allows you to again exit, start, or now you can delete the enemy(incase you changed your mind).
+Starting the game, you will be prompted to create a player, by entering it's name. Then the game will start you out in the AtticRoom. From here you have two choices, the window or the door. The window asks if you'd rather go back inside, or try your luck at jumping from the unknown height.
+If you choose the door, you will find yours elf on the stairs. From the stairs you have access to all the rooms, plus the exit, and a chance to see if a ghost has anything to offer you.
 
 ### What Goes into a README?
 

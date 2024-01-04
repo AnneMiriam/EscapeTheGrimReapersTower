@@ -2,7 +2,7 @@ import random
 from models.Enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
 
 # from data.default_enemies import default_enemies
-from models.NonPlayChar import *
+from models.NonPlayChar import Casper
 from models.__init__ import CURSOR, CONN
 
 
@@ -48,7 +48,7 @@ class FourthFloorRoom(MapRoom):
 
 class ThirdFloorRoom(MapRoom):
     def intro_text(self):
-        return """You find another small room. Like the attic room, this one has a window that leads out to a small balcony.\nThe room is otherwise bare, save for the candle wax pooling in the center of the floor beneath the lantern.
+        return """You find another small bedroom. Like the attic room, this one has a window that leads out to a small balcony.\nThe room appears to have a bed, and there appears to be some candle wax pooling in the center of the floor beneath a lantern.
         """
 
 
@@ -67,6 +67,11 @@ class FirstFloorRoom(MapRoom):
     def intro_text(self):
         return """The smell of rot greets you as you open the door. Crates of what must have once been fruit are stacked haphazardly in the corners, sticky liquid seeping out from the edges. Shelves filled with wine bottles, all either smashed or lying open on their side, line the walls. The cracked window on the far side of the room is doing nothing to help the smell. Or maybe it is, although you cannot imagine it getting worse than this.
         """
+        
+class FirstFloorWindow(MapRoom):
+    def intro_text(self):
+        return """The wind seems to be less fierce down here. The rain, also, seems lighter. It's still dark, but you think you can finally see the bottom of the tower. Above you, you see the balcony that must lead to the third floor room."""
+
 
 
 class WindowOption(MapRoom):
@@ -89,55 +94,55 @@ class VictoryIsYours(MapRoom):
         player.victory = True
 
 
-class EnemyAndFriends(MapRoom):
-    def __init__(self):
-        r = random.random()
+# class EnemyAndFriends(MapRoom):
+#     def __init__(self):
+#         r = random.random()
 
-        if r < 0.40:
-            randenemy = Enemy.find_by_id(-1)
-            if randenemy:
-                self.enemy = randenemy
-                self.alive_text = "Something otherworldly has appeared."
-                self.dead_text = "The creature has gone back to it's realm."
-            else:
-                self.enemy = Poltergeist
-                self.alive_text = "You pissed off a Poltergeist!"
-                self.dead_text = "Your exorcism succeeded!"
+#         if r < 0.40:
+#             randenemy = Enemy.find_by_id(-1)
+#             if randenemy:
+#                 self.enemy = randenemy
+#                 self.alive_text = "Something otherworldly has appeared."
+#                 self.dead_text = "The creature has gone back to it's realm."
+#             else:
+#                 self.enemy = Poltergeist
+#                 self.alive_text = "You pissed off a Poltergeist!"
+#                 self.dead_text = "Your exorcism succeeded!"
 
-        elif r < 0.50:
-            self.enemy = BlackWidow()
-            self.alive_text = "A Black Widow has bitten you."
-            self.dead_text = "You squished it."
+#         elif r < 0.50:
+#             self.enemy = BlackWidow()
+#             self.alive_text = "A Black Widow has bitten you."
+#             self.dead_text = "You squished it."
 
-        elif r < 0.60:
-            self.enemy = BlackCat()
-            self.alive_text = "A Black Cat has crossed your path!"
-            self.dead_text = "Rude! It was just walking by!"
+#         elif r < 0.60:
+#             self.enemy = BlackCat()
+#             self.alive_text = "A Black Cat has crossed your path!"
+#             self.dead_text = "Rude! It was just walking by!"
 
-        elif r < 0.75:
-            self.enemy = Poltergeist()
-            self.alive_text = "You pissed off a Poltergeist!"
-            self.dead_text = "Your exorcism succeeded!"
+#         elif r < 0.75:
+#             self.enemy = Poltergeist()
+#             self.alive_text = "You pissed off a Poltergeist!"
+#             self.dead_text = "Your exorcism succeeded!"
 
-        else:
-            self.enemy = GrimReaper()
-            self.alive_text = "You have run into the Grim Reaper!"
-            self.dead_text = "They are death! They cannot be killed!"
+#         else:
+#             self.enemy = GrimReaper()
+#             self.alive_text = "You have run into the Grim Reaper!"
+#             self.dead_text = "They are death! They cannot be killed!"
 
-        super().__init__(self)
+#         super().__init__(self)
 
-    def intro_text(self):
-        text = self.alive_text if self.enemy.is_alive() else self.dead_text
-        return text
+#     def intro_text(self):
+#         text = self.alive_text if self.enemy.is_alive() else self.dead_text
+#         return text
 
-    def modify_player(self, player):
-        if self.enemy.is_alive():
-            player.hp = player.hp - self.enemy.damage
-            print(
-                "Enemy does {} damage. You have {} HP remaining.".format(
-                    self.enemy.damage, player.hp
-                )
-            )
+#     def modify_player(self, player):
+#         if self.enemy.is_alive():
+#             player.hp = player.hp - self.enemy.damage
+#             print(
+#                 "Enemy does {} damage. You have {} HP remaining.".format(
+#                     self.enemy.damage, player.hp
+#                 )
+#             )
 
 
 class TradingGhost(MapRoom):
@@ -146,7 +151,7 @@ class TradingGhost(MapRoom):
         """
 
     def __init__(self):
-        self.trader = Casper()
+        self.name = Casper()
 
     # def trade(self, consumer, seller):
     #     for i, item in enumerate(seller.inventory, 1):
