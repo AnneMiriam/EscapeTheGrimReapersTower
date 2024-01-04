@@ -83,7 +83,6 @@ class Game:
 
     def random_encounter(self):
         enemy_data = random.choice(default_enemies)
-        # enemy_data = EnemyAndFriends()
         # Create an Enemy instance with random attributes
         if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
             random_enemy = Enemy(
@@ -172,11 +171,12 @@ class Game:
         room = StairCase()
         # encounter code
         encounter_chance = random.random()
+        print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 0.2:
             self.random_encounter()
 
         if self.current_enemy:
-            print(f"A {self.current_enemy} appeared!")
+            print(f"{self.current_enemy.alive_text}")
             self.battle()
         print()
         output_slow(room.return_text())
@@ -202,11 +202,12 @@ class Game:
         room = FourthFloorRoom()
         # encounter code
         encounter_chance = random.random()
+        print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 0.9:
             self.random_encounter()
 
         if self.current_enemy:
-            print(f"A {self.current_enemy} appeared!")
+            print(f"{self.current_enemy.alive_text}")
             self.battle()
         print()
         output_slow(room.intro_text())
@@ -228,11 +229,12 @@ class Game:
         if choice == "2":
             # encounter code
             encounter_chance = random.random()
-            if encounter_chance < 0.5:
+            print(f"Encounter chance: {encounter_chance}")
+            if encounter_chance < 0.3:
                 self.random_encounter()
 
             if self.current_enemy:
-                print(f"A {self.current_enemy} appeared!")
+                print(f"{self.current_enemy.alive_text}")
                 self.battle()
             print()
             output_slow("What are you doing napping at a time like this!")            
@@ -289,23 +291,54 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.go_second_floor(self)
+            
+    def go_first_floor_window(self):
+        room = FirstFloorWindow()
+        print()
+        output_slow(room.intro_text())
+        print()
+        print(
+            "1. Go back to the relative safety of the room \n2. Take your chances and leap"
+        )
+        choice = input("Where will you go? >> ")
+        if choice == "1":
+            Game.go_first_floor(self)
+        if choice == "2":
+            random_fate = random.random()
+            print(f"Random fate: {random_fate}")
+            if random_fate < 0.5:
+                print()
+                output_slow("You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!")
+                output_slower("YOU HAVE ESCAPED DEATH! YOU WIN!")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "As you step onto the railing you loose your footing on the slippery metal, you know you made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
+                )
+                output_slower("GAME OVER")
 
     def go_first_floor(self):
         room = FirstFloorRoom()
-        encounter_chance = random.random()
+        encounter_chance = round(random.random(), 1)
+        print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 0.5:
             self.random_encounter()
 
         if self.current_enemy:
-            print(f"A {self.current_enemy} appeared!")
+            print(f"{self.current_enemy.alive_text}")
             self.battle()
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Return to staircase")
+        print("1. Window \n 2. Return to staircase")
         choice = input("Where will you go? >> ")
         if choice == "1":
+            Game.go_first_floor_window(self)
+        if choice == "2":
             Game.return_staircase(self)
+            
+    
 
     def go_entryway(self):
         room = EntryWay()

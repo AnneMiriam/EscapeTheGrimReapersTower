@@ -67,6 +67,11 @@ class FirstFloorRoom(MapRoom):
     def intro_text(self):
         return """The smell of rot greets you as you open the door. Crates of what must have once been fruit are stacked haphazardly in the corners, sticky liquid seeping out from the edges. Shelves filled with wine bottles, all either smashed or lying open on their side, line the walls. The cracked window on the far side of the room is doing nothing to help the smell. Or maybe it is, although you cannot imagine it getting worse than this.
         """
+        
+class FirstFloorWindow(MapRoom):
+    def intro_text(self):
+        return """The wind seems to be less fierce down here. The rain, also, seems lighter. It's still dark, but you think you can finally see the bottom of the tower. Above you, you see the balcony that must lead to the third floor room."""
+
 
 
 class WindowOption(MapRoom):
