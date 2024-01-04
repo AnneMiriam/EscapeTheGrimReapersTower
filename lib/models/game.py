@@ -1,6 +1,8 @@
 import random
+from models.items import *
 from models.Enemy import Enemy
 from data.default_enemies import default_enemies
+from models.items import *
 from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
@@ -13,18 +15,38 @@ class Game:
         self.player = player
         self.enemy = enemy
         self.current_enemy = None
-        
-        def transaction(self, seller, consumer, item):
+       
+
+    def trade(self, consumer, seller):
+        room = TradingGhost()
+        seller = room.trader
+        for i, item in enumerate(seller.inventory, 1):
+            print("{}. {} HP".format(i, item, item.healing_value))
+        while True:
+            user_input = input("Select your item or press q to exit >>")
+            if user_input in ["q"]:
+                Game.return_staircase(self)
+                break
+            else:
+                try:
+                    choice = int(user_input)
+                    exchange = seller.inventory[choice - 1]
+                    self.transaction(seller, consumer, exchange)
+                    print("Trade sealed in ethereal terms.")
+                except ValueError:
+                    print("Unacceptable selection!")
+
+    def transaction(self, seller, consumer, item):
+        if isinstance(consumer, Player) and hasattr(item, "healing_value"):
             if item.healing_value > consumer.hp:
                 print(
-                "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
+                    "Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger."
                 )
-                return
-            seller.inventory.remove(item)
-            consumer.inventory.append(item)
-            seller.hp += item.healing_value
-            consumer.hp -= item.healing_value
-            print("Trade sealed in ethereal terms.")
+            return
+        seller.inventory.remove(item)
+        consumer.inventory.append(item)
+        consumer.update_health(item.healing_value)
+        print("Trade sealed in ethereal terms.")
 
     def create_player(self):
         while True:
@@ -76,8 +98,6 @@ class Game:
             self.current_enemy = random_enemy
         else:
             print("Invalid enemy data. Missing required attributes.")
-
-     
 
     def start_game(self):
         room = AtticRoom()
@@ -224,9 +244,10 @@ class Game:
         room = TradingGhost()
         print()
         output_slow(room.intro_text())
-        print("1.Trade \n2. Return to staircase")
-        choice = input("What would you like to do? >>")
+        print("1. Trade \n2. Return to staircase")
+        choice = input("Would you like to test your fate? >>")
         if choice == "1":
+            print("Behold, these are the offerings for trade from beyond the veil.")
             self.trade(self.player, room.trader)
         if choice == "2":
             Game.return_staircase(self)
@@ -254,16 +275,20 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Investigate desk \n2. Return to staircase")
+        print("1. Investigate desk \n2. Return to staircase \n3. Check Inventory")
         choice = input("Where will you go? >> ")
         if choice == "1":
             print()
             output_slow(
                 "You open the drawer. Not much stands out to you at first - a couple of papers, some old letters maybe - but as you sift through the contents you find a large iron skeleton key. This may come in handy."
             )
+            self.player.add_to_inventory(Key())
             Game.go_second_floor(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.go_second_floor(self)
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -287,32 +312,54 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1.Try your luck with the front door \n2. Return to staircase")
+        print(
+            "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
+        )
         choice = input("Where will you go? >> ")
         if choice == "1":
-            print()
-            output_slow(
-                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
-            )
-            Game.return_entryway(self)
+            if any(isinstance(item, Key) for item in self.player.inventory):
+                print()
+                output_slow("You get out and win!")
+                output_slower("YOU HAVE ESCAPED DEATH")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+                )
+                Game.return_entryway(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_entryway(self)
 
     def return_entryway(self):
         room = EntryWay()
         print()
         output_slow(room.return_text())
         print()
-        print("1.Try your luck with the front door \n2. Return to staircase")
+        print(
+            "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
+        )
         choice = input("Where will you go? >> ")
         if choice == "1":
-            print()
-            output_slow(
-                "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
-            )
-            Game.return_entryway(self)
+            if any(isinstance(item, Key) for item in self.player.inventory):
+                print()
+                output_slow("You get out and win!")
+                output_slower("YOU HAVE ESCAPED DEATH")
+                exit()
+            else:
+                print()
+                output_slow(
+                    "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+                )
+                Game.return_entryway(self)
         if choice == "2":
             Game.return_staircase(self)
+        if choice == "3":
+            self.player.print_inventory()
+            Game.return_entryway(self)
 
     # def random_encounter(self):
     #     enemy_data = random.choice(default_enemies)
@@ -389,6 +436,4 @@ class Game:
         else:
             print("Unacceptable selection!")
 
-    
 
-    

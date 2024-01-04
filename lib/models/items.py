@@ -31,6 +31,7 @@ class MysteriousLiquid(Consumable):
     def __init__(self):
         self.name = "Mysterious liquid"
         self.description = "A vial filled with a golden liquid with an almost iridescent sheen to it. It smells a bit like caramel."
+        self.healing_value = 5
 
 
 class Usable:
@@ -44,4 +45,9 @@ class Usable:
 class Rope(Usable):
     def __init__(self):
         self.name = "Rope"
-        self.description = ""
+        self.description = "A long, woven rope"
+        
+class Key(Usable):
+    def __init__(self):
+        self.name = "Key"
+        self.description = "A heavy iron key"
