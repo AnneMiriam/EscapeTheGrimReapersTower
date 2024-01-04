@@ -35,7 +35,7 @@ class Enemy:
 
     @hp.setter
     def hp(self, hp):
-        if isinstance(hp, int) and hp >= 0:
+        if isinstance(hp, int) and hp > 0:
             self._hp = hp
         else:
             raise ValueError("HP must be a positive integer.")
@@ -46,7 +46,7 @@ class Enemy:
 
     @damage.setter
     def damage(self, damage):
-        if isinstance(damage, int) and damage >= 0:
+        if isinstance(damage, int) and damage > 0:
             self._damage = damage
         else:
             raise ValueError("Damage must be a positive integer.")
