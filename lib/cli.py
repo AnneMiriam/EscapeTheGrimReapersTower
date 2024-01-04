@@ -6,7 +6,8 @@ from helpers import (
     output_slower
 )
 from models.game import Game
-
+from models.player import Player
+from models.Enemy import Enemy
 
 def main():
 

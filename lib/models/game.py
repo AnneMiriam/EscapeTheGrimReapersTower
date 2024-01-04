@@ -7,7 +7,13 @@ from models.NonPlayChar import *
 from models.rooms import *
 from models.player import Player
 from helpers import output_slow, output_slower
-from models.items import StaleBread, MoldyApple, MysteriousLiquid, Rope, QuestionableLiquid
+from models.items import (
+    StaleBread,
+    MoldyApple,
+    MysteriousLiquid,
+    Rope,
+    QuestionableLiquid,
+)
 
 
 class Game:
@@ -15,7 +21,6 @@ class Game:
         self.player = player
         self.enemy = enemy
         self.current_enemy = None
-       
 
     #  trading code
     def trade(self, consumer, seller):
@@ -122,14 +127,16 @@ class Game:
             self.current_enemy = random_enemy
         else:
             print("Invalid enemy data. Missing required attributes.")
-            
-    #START GAME and room navigation
+
+    # START GAME and room navigation
     def start_game(self):
         room = AtticRoom()
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Go to window \n2. Go to door \n3. Check inventory")
+        print(
+            "1. Go to window \n2. Go to door \n3. Check inventory \n4. Pick up Tome of Souls"
+        )
         choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_attic_window(self)
@@ -137,6 +144,38 @@ class Game:
             Game.go_staircase(self)
         if choice == "3":
             self.player.print_inventory()
+            Game.return_attic_room(self)
+        if choice == "4":
+            Game.pick_up_soul_book(self)
+
+    def pick_up_soul_book(self):
+        print()
+        output_slow("It's a book")
+        print()
+        print(
+            "1. Look over all of the names \n2. Look for a specific name \n3. Cross out a name \n4. Put down book "
+        )
+        choice = input("What will you do? >> ")
+        if choice == "1":
+            print()
+            print(Player.get_all())
+            Game.pick_up_soul_book(self)
+        if choice == "2":
+            val = input("Who do you seek? >>")
+            print()
+            print(Player.find_by_name(val))
+            Game.pick_up_soul_book(self)
+        if choice == "3":
+            value = input("What is name of the soul you seek to set free? >> ")
+            soul = Player.find_by_name(value)
+            if soul: 
+                soul.delete()
+                print()
+                print("Somewhere in the distance, a bell tolls.")
+            else:
+                print("You look to cross out the name, but you cannot find them.")
+            Game.pick_up_soul_book(self)
+        if choice == "4":
             Game.return_attic_room(self)
 
     def go_attic_window(self):
@@ -166,7 +205,9 @@ class Game:
         print()
         output_slow(room.return_text())
         print()
-        print("1. Go to window \n2. Go to door \n3. Check inventory")
+        print(
+            "1. Go to window \n2. Go to door \n3. Check inventory \n4. Pick up Tome of Souls"
+        )
         choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_attic_window(self)
@@ -175,6 +216,8 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.return_attic_room
+        if choice == "4":
+            Game.pick_up_soul_book(self)
 
     def go_staircase(self):
         room = StairCase()
@@ -266,7 +309,9 @@ class Game:
         print()
         output_slow(room.intro_text())
         print()
-        print("1. Go to the window \n2. You're exhausted: Take a nap on the bed \n3. Return to staircase \n4. Check inventory")
+        print(
+            "1. Go to the window \n2. You're exhausted: Take a nap on the bed \n3. Return to staircase \n4. Check inventory"
+        )
         choice = input("What will you do? >> ")
         if choice == "1":
             Game.go_third_floor_window(self)
@@ -281,7 +326,7 @@ class Game:
                 print(f"{self.current_enemy.alive_text}")
                 self.battle()
             print()
-            output_slow("What are you doing napping at a time like this!")            
+            output_slow("What are you doing napping at a time like this!")
             Game.go_third_floor(self)
         if choice == "3":
             Game.return_staircase(self)
@@ -342,7 +387,7 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.go_second_floor(self)
-            
+
     def go_first_floor_window(self):
         room = FirstFloorWindow()
         print()
@@ -359,7 +404,9 @@ class Game:
             print(f"Random fate: {random_fate}")
             if random_fate < 0.5:
                 print()
-                output_slow("You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!")
+                output_slow(
+                    "You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!"
+                )
                 output_slower("YOU HAVE ESCAPED DEATH! YOU WIN!")
                 exit()
             else:
@@ -462,7 +509,13 @@ class Game:
 
     # Battle Code
     def random_encounter(self):
-        enemy_types = [GrimReaper, BlackCat, Poltergeist, BlackWidow, Enemy.find_by_id(-1)]
+        enemy_types = [
+            GrimReaper,
+            BlackCat,
+            Poltergeist,
+            BlackWidow,
+            Enemy.find_by_id(-1),
+        ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
 
@@ -492,7 +545,9 @@ class Game:
                 print("Invalid choice. You must battle or flee...")
 
             if self.current_enemy.hp <= 0:
-                print(f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!")
+                print(
+                    f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!"
+                )
                 break
 
             self.attack(self.current_enemy, self.player)
@@ -507,4 +562,3 @@ class Game:
         attacker_damage = attacker.damage
         print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
         target.hp -= attacker_damage
-
