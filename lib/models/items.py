@@ -31,6 +31,7 @@ class MysteriousLiquid(Consumable):
     def __init__(self):
         self.name = "Mysterious liquid"
         self.description = "A vial filled with a golden liquid with an almost iridescent sheen to it. It smells a bit like caramel."
+        self.healing_value = 5
 
 
 class Usable:
