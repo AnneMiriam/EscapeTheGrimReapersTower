@@ -171,7 +171,7 @@ class TradingGhost(MapRoom):
 
     def transaction(self, seller, consumer, item):
         if item.healing_value > consumer.hp:
-            print("you are lacking in vitality, your HP is insufficient.")
+            print("Oh no dearie, that simply won't do. It seems you do not have enough vitality to share! But do feel free to come back when you're feeling stronger.")
             return
         seller.inventory.remove(item)
         consumer.inventory.append(item)
