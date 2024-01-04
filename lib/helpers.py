@@ -41,7 +41,7 @@ def helper_1():
 def output_slow(output):
     for char in output:
         print(char, end="", flush=True)
-        time.sleep(0.2)
+        time.sleep(0.01)
     print()
 
 

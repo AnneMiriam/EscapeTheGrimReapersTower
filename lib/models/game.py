@@ -30,17 +30,36 @@ class Game:
         self.player.create_table()
         self.player.save()
 
+    def create_enemy(self):
+        while True:
+            print("What kind of enemy")
+            enemy_name = input("Enter it's name: ")
+            # enemy_damage = input("How much damage can your enemy cause: " )
+            try:
+                # Initialize enemy instance
+                self.enemy = Enemy(enemy_name)
+                break  # Exit loop if successful
+            except ValueError as e:
+                print(e)
+                continue
+        # Create table and save enemy object to db
+        self.enemy.create_table()
+        self.enemy.save()
+
     def random_encounter(self):
         enemy_data = random.choice(default_enemies)
         # Create an Enemy instance with random attributes
-        random_enemy = Enemy(
-            hp=enemy_data["hp"], damage=enemy_data["damage"], name=enemy_data["name"]
-        )
-        # Save the enemy to the database
-        random_enemy.create_table()
-        random_enemy.save()
-        # Set the current_enemy to the randomly encountered enemy
-        self.current_enemy = random_enemy
+        if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
+            random_enemy = Enemy(
+                hp=enemy_data["hp"], damage=enemy_data["damage"], name=enemy_data["name"]
+            )
+            # Save the enemy to the database
+            random_enemy.create_table()
+            random_enemy.save()
+            # Set the current_enemy to the randomly encountered enemy
+            self.current_enemy = random_enemy
+        else:
+            print('Invalid enemy data. Missing required attributes.')
 
     def start_game(self):
         room = AtticRoom()
@@ -191,24 +210,6 @@ class Game:
             pass
         if choice == "2":
             Game.return_staircase(self)
-        
-    def create_enemy(self):
-        while True:
-            print("What kind of enemy")
-            enemy_name = input("Enter it's name: ")
-            # enemy_damage = input("How much damage can your enemy cause: " )
-            try:
-                # Initialize enemy instance
-                self.enemy = Enemy(enemy_name)
-                break  # Exit loop if successful
-            except ValueError as e:
-                print(e)
-                continue
-        # Create table and save enemy object to db
-        self.enemy.create_table()
-        self.enemy.save()
-
-        
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -245,7 +246,6 @@ class Game:
     #     random_enemy.save()
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
-
 
 
 # Battle Code
