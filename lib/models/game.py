@@ -471,14 +471,14 @@ class Game:
             if random_fate < 5:
                 print()
                 output_slow(
-                    "You step onto the railing and almost lose your footing. You fumble for a moment, terror beginning to well up in your stomach, but you are able to stabilize. You let out a sigh of relief and take a look around. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground - a stinging pain rushes through them, but you are alive. And FREE!"
+                    "You step onto the railing and almost lose your footing. You fumble for a moment, terror beginning to well up in your stomach, but you are able to stabilize. You let out a sigh of relief and take a look around. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \nYour feet hit the ground - a stinging pain rushes through them, but you are alive. And FREE!"
                 )
                 output_slower("YOU HAVE ESCAPED DEATH... FOR NOW!")
                 exit()
             else:
                 print()
                 output_slow(
-                    "As you step onto the railing you loose your footing on the slippery metal, you know you made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
+                    "As you step onto the railing you lose your footing on the slippery metal, and you know you've made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
                 )
                 output_slower("GAME OVER")
                 exit()
