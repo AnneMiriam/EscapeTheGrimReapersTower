@@ -1,4 +1,6 @@
 import random
+from sys import settrace
+from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.enemy import Enemy
 from data.default_enemies import default_enemies
@@ -129,10 +131,20 @@ class Game:
     #         print("Invalid enemy data. Missing required attributes.")
             
     # Battle Code
+    
+    def get_random_enemy_id(self):
+        CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
+        result = CURSOR.fetchone()
+
+        if result:
+            return result[0]
+        else:
+            return None
     def random_encounter(self):
+      random_enemy_id = self.get_random_enemy_id()
         enemy_types = [
             GrimReaper, BlackCat, Poltergeist, BlackWidow,
-                       Enemy.find_by_id(-1)]
+                      # Enemy.find_by_id(random_enemy_id)]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
         random_enemy = random_enemy_type()
@@ -504,8 +516,10 @@ class Game:
         if choice == "1":
             if any(isinstance(item, Key) for item in self.player.inventory):
                 print()
-                output_slow("As you place your hand on the handle")
-                output_slower("YOU HAVE ESCAPED DEATH")
+                output_slow(
+                    "As you place your hand on the handle, you notice an iron keyhole on one of the doors. You hurridly reach for the key in your pocket, praying to any god that will listen that it will fit the lock. You insert the key into the hole, and to your elation hear a soft click. The doors groan as you pull them open; behind you, you hear the sound of metal dragging against stone and the rattling of bones. Without sparing a second glance, you take off running into the night, and do not stop until the lights of the tower have completely faded into the distance."
+                )
+                output_slower("YOU HAVE ESCAPED DEATH... FOR NOW")
                 exit()
             else:
                 print()
