@@ -166,7 +166,7 @@ class Poltergeist(Enemy):
 class BlackWidow(Enemy):
     def __init__(self):
         self.name = "Black Wider Spider"
-        self.hp = 8
-        self.damage = 5
+        self.hp = 5
+        self.damage = 4
         self.alive_text = "A Black Widow has bitten you."
         self.dead_text = "You squished it."
