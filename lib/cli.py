@@ -50,6 +50,7 @@ def new_menu():
     print("1. Take a breath - remember who you are")
     print("2. Look up created enemies")
     print("3. Delete created enemies")
+    print("4. Create another enemy")
     choice = input("> ")
     if choice == "0":
         exit_program()
@@ -75,6 +76,10 @@ def new_menu():
             print("You have eliminated an enemy!")
         else:
             print("This enemy does not exist! Look for another or play the game.")
+    elif choice == "4":
+        # create an enemy in the Enemy class
+        game = Game(None, None)
+        game.create_enemy()
         new_menu()
 
 
