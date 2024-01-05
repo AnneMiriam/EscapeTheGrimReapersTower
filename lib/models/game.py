@@ -1,6 +1,4 @@
 import random
-from sys import settrace
-from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.enemy import Enemy
 from data.default_enemies import default_enemies

@@ -74,11 +74,6 @@ class FirstFloorWindow(MapRoom):
         return """The wind seems to be less fierce down here. The rain, also, seems lighter. It's still dark, but you think you can finally see the bottom of the tower. Above you, you see the balcony that must lead to the third floor room."""
 
 
-class WindowOption(MapRoom):
-    def intro_text(self):
-        return """"""
-
-
 class EntryWay(MapRoom):
     def intro_text(self):
         return """You reach the bottom of the stairs and are greeted by a yawning entryway, its high walls lined with iron lanterns holding flickering candles. Before you are a set of heavy double doors, stained a rich reddish-brown, intricately carved with scenes of mortals fleeing in terror from a skeletal figure in billowing robes wielding a scythe. The path that leads to the doors is lined with statues of similar skeletal figures.\nThough they have no eyes, you could swear you can feel them watching you.
