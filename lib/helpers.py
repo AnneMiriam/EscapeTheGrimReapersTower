@@ -40,7 +40,7 @@ def output_slow(output):
     for char in output:
         print(char, end="", flush=True)
 
-        time.sleep(0.001)
+        time.sleep(0.02)
 
 
     print()

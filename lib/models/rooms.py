@@ -48,7 +48,7 @@ class FourthFloorRoom(MapRoom):
 
 class ThirdFloorRoom(MapRoom):
     def intro_text(self):
-        return """You find another small bedroom. Like the attic room, this one has a window that leads out to a small balcony.\nThe room appears to have a bed, and there appears to be some candle wax pooling in the center of the floor beneath a lantern.
+        return """You find another small bedroom. Like the attic room, this one has a window that leads out to a small balcony.\nThe frame of the bed in the corner looks ancient, its once fine details chipped and splintering. The mattress is lumpy and old, but looks dry and useable.\nCandle wax pools in the center of the floor beneath the lantern, the candle within having tipped over who knows how long ago.
         """
 
 
