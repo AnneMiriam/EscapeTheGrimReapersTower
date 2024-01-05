@@ -150,7 +150,7 @@ class Game:
 
     def pick_up_soul_book(self):
         print()
-        output_slow("It's a book")
+        output_slow("The book is heavy, bound in leather and chains. The paper is rough cut and thick, the pages so old that they crackle as you turn them.")
         print()
         print(
             "1. Look over all of the names \n2. Look for a specific name \n3. Cross out a name \n4. Put down book "
