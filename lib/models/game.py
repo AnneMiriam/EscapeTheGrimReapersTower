@@ -118,7 +118,6 @@ class Game:
         self.enemy.create_table()
         self.enemy.save()
 
-    
     # Battle Code
 
     # def get_random_enemy_id(self):
@@ -138,6 +137,7 @@ class Game:
             Poltergeist,
             BlackWidow,
             #Enemy.find_by_id(-1),
+
         ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
@@ -148,37 +148,43 @@ class Game:
         if not self.player or not self.current_enemy:
             print("Must be alive to battle")
             return
+
         # print(f"A {self.current_enemy} appeared!")
+
         while self.player.hp > 0 and self.current_enemy.hp >= 0:
             print(f"{self.player.name}'s HP: {self.player.hp}")
             print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
 
             player_choice = input("(a)ttack or (r)un >> ")
+
             if player_choice == "a":
                 self.attack(self.player, self.current_enemy)
-            if player_choice == "r":
+                if self.current_enemy.hp <= 0:
+                    print(
+                        f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!"
+                    )
+                    Game.return_staircase(self)
+                    break
+
+                if self.current_enemy.hp > 0:
+                    self.attack(self.current_enemy, self.player)
+
+                if self.player.hp <= 0:
+                    print()
+                    output_slow("You have become another soul within the tower")
+                    output_slower("GAME OVER")
+                    exit()
+
+            elif player_choice == "r":
                 print()
                 output_slow(
                     "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
                 )
                 Game.return_attic_room(self)
-            # else:
-            #     print("Invalid choice. You must battle or flee...")
-                
                 break
-
-            if self.current_enemy.hp <= 0:
-                print(
-                    f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!"
-                )
-                break
-
-            self.attack(self.current_enemy, self.player)
-            if self.player.hp <= 0:
-                print()
-                output_slow("You have become another soul within the tower")
-                output_slower("GAME OVER")
-                exit()
+            else:
+                print("Invalid choice. You must battle or flee...")
+                continue
 
     # attack code
     def attack(self, attacker, target):
@@ -363,7 +369,7 @@ class Game:
             if self.current_enemy:
                 print(f"{self.current_enemy.alive_text}")
                 self.battle()
-        else:    
+        else:
             print()
             output_slow(room.intro_text())
             print()
@@ -566,5 +572,3 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.return_entryway(self)
-
-
