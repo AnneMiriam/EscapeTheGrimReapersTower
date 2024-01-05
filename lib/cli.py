@@ -76,6 +76,7 @@ def new_menu():
             print("You have eliminated an enemy!")
         else:
             print("This enemy does not exist! Look for another or play the game.")
+        new_menu()
     elif choice == "4":
         # create an enemy in the Enemy class
         game = Game(None, None)
