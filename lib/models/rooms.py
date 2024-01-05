@@ -22,7 +22,7 @@ class MapRoom:
 
 class AtticRoom(MapRoom):
     def intro_text(self):
-        return """You take another look around the room. You can see that the window opens up onto a small balcony."""
+        return """You take another look around the room. You can see that the window opens up onto a small balcony. In the corner of the room lies a large book bound in red leather with the words "Tome of Souls" emblazoned across the front in flakey gold lettering."""
 
     def return_text(self):
         return """The same cold, empty room you started in. On one side stands a plain wooden door. On the other, a window that looks as if it's about to be blown off its hinges."""
