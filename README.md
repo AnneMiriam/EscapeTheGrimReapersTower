@@ -15,8 +15,6 @@ Take a look at the directory structure:
 ├── Pipfile
 ├── Pipfile.lock
 ├── README.md
-├── data
-│    ├── default_enemies.py
 └── lib
     ├── models
     │   ├── __init__.py
