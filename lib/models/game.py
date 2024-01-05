@@ -1,9 +1,9 @@
 import random
-from sys import settrace
-from models.__init__ import CURSOR, CONN
+# from sys import settrace
+# from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.enemy import Enemy
-from data.default_enemies import default_enemies
+# from data.default_enemies import default_enemies
 from models.items import *
 from models.NonPlayChar import *
 from models.rooms import *
@@ -120,15 +120,6 @@ class Game:
 
     # Battle Code
 
-    # def get_random_enemy_id(self):
-    #     CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
-    #     result = CURSOR.fetchone()
-
-    #     if result:
-    #         return result[0]
-    #     else:
-    #         return None
-
     def random_encounter(self):
         # random_enemy_id = self.get_random_enemy_id()
         enemy_types = [
@@ -139,7 +130,6 @@ class Game:
             #Enemy.find_by_id(-1),
         ]
         random_enemy_type = random.choice(enemy_types)
-        # random_enemy_type = EnemyAndFriends(enemy_types)
         random_enemy = random_enemy_type()
         self.current_enemy = random_enemy
 
@@ -148,7 +138,6 @@ class Game:
             print("Must be alive to battle")
             return
 
-        # print(f"A {self.current_enemy} appeared!")
 
         while self.player.hp > 0 and self.current_enemy.hp >= 0:
             print(f"{self.player.name}'s HP: {self.player.hp}")
@@ -268,7 +257,7 @@ class Game:
         if choice == "2":
             print()
             output_slow(
-                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
+                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own imminent death - your failure - you close your eyes and wait for the pain."
             )
             output_slower("GAME OVER")
             exit()
@@ -291,7 +280,7 @@ class Game:
             Game.go_staircase(self)
         if choice == "3":
             self.player.print_inventory()
-            Game.return_attic_room
+            Game.return_attic_room(self)
         if choice == "4":
             Game.pick_up_soul_book(self)
 
@@ -362,7 +351,7 @@ class Game:
         room = FourthFloorRoom()
         # encounter code
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
+        # print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 7:
             self.random_encounter()
             if self.current_enemy:
@@ -437,9 +426,10 @@ class Game:
         if choice == "2":
             print()
             output_slow(
-                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
+                "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own imminent death - your failure - you close your eyes and wait for the pain."
             )
             output_slower("GAME OVER")
+            exit()
         if choice == "3":
             self.player.print_inventory()
             Game.go_third_floor_window(self)
@@ -470,7 +460,7 @@ class Game:
         output_slow(room.intro_text())
         print()
         print(
-            "1. Go back to the relative safety of the room \n2. Take your chances and leap"
+            "1. Go back to the room, it not so bad here. \n2. Take your chances and leap"
         )
         choice = input("Where will you go? >> ")
         if choice == "1":
@@ -491,6 +481,7 @@ class Game:
                     "As you step onto the railing you loose your footing on the slippery metal, you know you made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
                 )
                 output_slower("GAME OVER")
+                exit()
 
     def go_first_floor(self):
         room = FirstFloorRoom()

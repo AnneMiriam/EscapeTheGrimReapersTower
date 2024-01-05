@@ -1,4 +1,4 @@
-import random
+
 from models.enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
 
 # from data.default_enemies import default_enemies
