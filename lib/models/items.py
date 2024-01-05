@@ -13,7 +13,7 @@ class StaleBread(Consumable):
     def __init__(self):
         self.name = "Stale bread"
         self.description = "The bread is old and hard, but still edible - you wonder how long it's been there."
-        self.healing_value = random.randint(2, 15)
+        self.healing_value = random.randint(5, 15)
 
 
 class QuestionableLiquid(Consumable):

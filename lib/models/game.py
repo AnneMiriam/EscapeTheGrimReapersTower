@@ -2,7 +2,7 @@ import random
 from sys import settrace
 from models.__init__ import CURSOR, CONN
 from models.items import *
-from models.Enemy import Enemy
+from models.enemy import Enemy
 from data.default_enemies import default_enemies
 from models.items import *
 from models.NonPlayChar import *
@@ -31,7 +31,7 @@ class Game:
 
         while True:
             for i, item in enumerate(seller.inventory, 1):
-                print("{}. {}".format(i, item))
+                print("{}. {} - {}".format(i, item, item.description))
 
             user_input = input("Select your item or press q to exit >> ")
 
@@ -78,7 +78,7 @@ class Game:
             else:
                 consumer.hp += item.healing_value
                 print("Trade sealed in ethereal terms.")
-                print(f"Ypur updated HP: {consumer.hp} (+{item.healing_value})")
+                print(f"Your updated HP: {consumer.hp} (+{item.healing_value})")
 
     def create_player(self):
         while True:
@@ -113,22 +113,83 @@ class Game:
         self.enemy.create_table()
         self.enemy.save()
 
-    def random_encounter(self):
-        enemy_data = random.choice(default_enemies)
-        # Create an Enemy instance with random attributes
-        if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
-            random_enemy = Enemy(
-                hp=enemy_data["hp"],
-                damage=enemy_data["damage"],
-                name=enemy_data["name"],
-            )
-            # Save the enemy to the database
-            random_enemy.create_table()
-            random_enemy.save()
-            # Set the current_enemy to the randomly encountered enemy
-            self.current_enemy = random_enemy
+    # def random_encounter(self):
+    #     enemy_data = random.choice(default_enemies)
+    #     # Create an Enemy instance with random attributes
+    #     if "hp" in enemy_data and "damage" in enemy_data and "name" in enemy_data:
+    #         random_enemy = Enemy(
+    #             hp=enemy_data["hp"],
+    #             damage=enemy_data["damage"],
+    #             name=enemy_data["name"],
+    #         )
+    #         # Save the enemy to the database
+    #         random_enemy.create_table()
+    #         random_enemy.save()
+    #         # Set the current_enemy to the randomly encountered enemy
+    #         self.current_enemy = random_enemy
+    #     else:
+    #         print("Invalid enemy data. Missing required attributes.")
+            
+    # Battle Code
+    
+    def get_random_enemy_id(self):
+        CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
+        result = CURSOR.fetchone()
+
+        if result:
+            return result[0]
         else:
-            print("Invalid enemy data. Missing required attributes.")
+            return None
+    def random_encounter(self):
+      random_enemy_id = self.get_random_enemy_id()
+        enemy_types = [
+            GrimReaper, BlackCat, Poltergeist, BlackWidow,
+                      # Enemy.find_by_id(random_enemy_id)]
+        random_enemy_type = random.choice(enemy_types)
+        # random_enemy_type = EnemyAndFriends(enemy_types)
+        random_enemy = random_enemy_type()
+        self.current_enemy = random_enemy
+
+    def battle(self):
+        if not self.player or not self.current_enemy:
+            print("Must be alive to battle")
+            return
+        # print(f"A {self.current_enemy} appeared!")
+        while self.player.hp > 0 and self.current_enemy.hp > 0:
+            print(f"{self.player.name}'s HP: {self.player.hp}")
+            print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
+
+            player_choice = input("(a)ttack or (r)un >> ")
+            if player_choice == "a":
+                self.attack(self.player, self.current_enemy)
+            if player_choice == "r":
+                print()
+                output_slow(
+                    "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
+                )
+                Game.return_attic_room(self)
+            else:
+                print("Invalid choice. You must battle or flee...")
+
+            if self.current_enemy.hp <= 0:
+                print(f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!")
+                break
+
+            self.attack(self.current_enemy, self.player)
+            if self.player.hp <= 0:
+                print()
+                output_slow("You have become another soul within the tower")
+                output_slower("GAME OVER")
+                exit()
+
+    # attack code
+    def attack(self, attacker, target):
+        attacker_damage = attacker.damage
+        print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
+        target.hp -= attacker_damage
+
+            
+ 
 
     # START GAME and room navigation
     def start_game(self):
@@ -513,72 +574,3 @@ class Game:
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
 
-    # Battle Code
-    def get_random_enemy_id(self):
-        CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
-        result = CURSOR.fetchone()
-
-        if result:
-            return result[0]
-        else:
-            return None
-
-    def random_encounter(self):
-        random_enemy_id = self.get_random_enemy_id()
-        enemy_types = [
-            GrimReaper,
-            BlackCat,
-            Poltergeist,
-            BlackWidow,
-            # Enemy.find_by_id(random_enemy_id),
-        ]
-        valid_enemy_types = [
-            enemy_type for enemy_type in enemy_types if enemy_type is not None
-        ]
-        if valid_enemy_types:
-            random_enemy_type = random.choice(enemy_types)
-            # random_enemy_type = EnemyAndFriends(enemy_types)
-            random_enemy = random_enemy_type()
-            self.current_enemy = random_enemy
-        else:
-            print("No valid enemy types found.")
-
-    def battle(self):
-        if not self.player or not self.current_enemy:
-            print("Must be alive to battle")
-            return
-        # print(f"A {self.current_enemy} appeared!")
-        while self.player.hp > 0 and self.current_enemy.hp > 0:
-            print(f"{self.player.name}'s HP: {self.player.hp}")
-            print(f"{self.current_enemy.name}' HP: {self.current_enemy.hp}")
-
-            player_choice = input("(a)ttack or (r)un >> ")
-            if player_choice == "a":
-                self.attack(self.player, self.current_enemy)
-            if player_choice == "r":
-                print()
-                output_slow(
-                    "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
-                )
-                Game.return_attic_room(self)
-            else:
-                print("Invalid choice. You must battle or flee...")
-
-            if self.current_enemy.hp <= 0:
-                print(
-                    f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!"
-                )
-                break
-
-            self.attack(self.current_enemy, self.player)
-            if self.player.hp <= 0:
-                print()
-                output_slow("You have become another soul within the tower")
-                output_slower("GAME OVER")
-                exit()
-
-    # attack code
-    def attack(self, attacker, target):
-        attacker_damage = attacker.damage
-        print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
-        target.hp -= attacker_damage
