@@ -1,6 +1,6 @@
 import random
 from models.items import *
-from models.Enemy import Enemy
+from models.enemy import Enemy
 from data.default_enemies import default_enemies
 from models.items import *
 from models.NonPlayChar import *
@@ -29,7 +29,7 @@ class Game:
 
         while True:
             for i, item in enumerate(seller.inventory, 1):
-                print("{}. {}".format(i, item))
+                print("{}. {} - {}".format(i, item, item.description))
 
             user_input = input("Select your item or press q to exit >> ")
 
@@ -150,7 +150,9 @@ class Game:
 
     def pick_up_soul_book(self):
         print()
-        output_slow("The book is heavy, bound in leather and chains. The paper is rough cut and thick, the pages so old that they crackle as you turn them.")
+        output_slow(
+            "The book is heavy, bound in leather and chains. The paper is rough cut and thick, the pages so old that they crackle as you turn them."
+        )
         print()
         print(
             "1. Look over all of the names \n2. Look for a specific name \n3. Cross out a name \n4. Put down book "
@@ -168,7 +170,7 @@ class Game:
         if choice == "3":
             value = input("What is name of the soul you seek to set free? >> ")
             soul = Player.find_by_name(value)
-            if soul: 
+            if soul:
                 soul.delete()
                 print()
                 print("Somewhere in the distance, a bell tolls.")

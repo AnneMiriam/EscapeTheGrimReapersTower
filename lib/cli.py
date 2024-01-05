@@ -3,7 +3,8 @@
 from helpers import display_intro, exit_program, output_slower
 from models.game import Game
 from models.player import Player
-from models.Enemy import Enemy
+from models.enemy import Enemy
+
 
 def main():
     while True:
