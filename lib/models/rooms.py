@@ -35,7 +35,7 @@ class AtticRoomWindow(MapRoom):
 
 class StairCase(MapRoom):
     def intro_text(self):
-        return """The hinges of the door squeal as you open it, their infrequent use and lack of care made evident. Before you is a staircase, its walls and steps carved from the same stone as the attic room. It curves as it descends, spiralling ever downward into the great unknown. At the top of the stairs, the shimmering, translucent form of an old woman hums to herself quietly. She seems to pay you no mind.\nAs you descend, you come upon a door. It appears to be unlocked. You count three more doors before the staircase opens at the bottom, a soft glow eminating from the room awaiting you there."""
+        return """The hinges of the door squeal as you open it, their infrequent use and lack of care made evident. Before you is a staircase, its walls and steps carved from the same stone as the attic room. It curves as it descends, spiralling ever downward into the great unknown. At the top of the stairs, the shimmering, translucent form of an old woman hums to herself quietly. She seems to pay you no mind.\nAs you descend, you come upon a door. It appears to be unlocked. You count three more doors before the staircase opens at the bottom, a soft glow emanating from the room awaiting you there."""
 
     def return_text(self):
         return """You return to the staircase. Where else can you go?"""

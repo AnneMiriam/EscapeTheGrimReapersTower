@@ -14,7 +14,7 @@ def display_intro():
     )
     print()
     output_slow(
-        "The room you find yourself in is bare, its rough hewn stone walls illuminated only by a lantern hanging from the arched cieling."
+        "The room you find yourself in is bare, its rough hewn stone walls illuminated only by a lantern hanging from the arched ceiling."
     )
 
     output_slow(
