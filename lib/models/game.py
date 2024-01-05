@@ -131,7 +131,7 @@ class Game:
     #         print("Invalid enemy data. Missing required attributes.")
 
     # Battle Code
-    
+
     def get_random_enemy_id(self):
         CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
         result = CURSOR.fetchone()
@@ -140,12 +140,15 @@ class Game:
             return result[0]
         else:
             return None
-    def random_encounter(self):
-      random_enemy_id = self.get_random_enemy_id()
-        enemy_types = [
 
-            GrimReaper, BlackCat, Poltergeist, BlackWidow,
-                      # Enemy.find_by_id(random_enemy_id)
+    def random_encounter(self):
+        random_enemy_id = self.get_random_enemy_id()
+        enemy_types = [
+            GrimReaper,
+            BlackCat,
+            Poltergeist,
+            BlackWidow,
+            # Enemy.find_by_id(random_enemy_id)
         ]
 
         random_enemy_type = random.choice(enemy_types)
@@ -224,13 +227,23 @@ class Game:
         )
         choice = input("What will you do? >> ")
         if choice == "1":
-            print()
-            print(Player.get_all())
+            all_names = Player.get_all()
+            if all_names:
+                print()
+                print(all_names)
+            else:
+                print()
+                print("The pages are all blank.")
             Game.pick_up_soul_book(self)
         if choice == "2":
             val = input("Who do you seek? >>")
-            print()
-            print(Player.find_by_name(val))
+            name = Player.find_by_name(val)
+            if name:
+                print()
+                print(name)
+            else:
+                print()
+                print("You search for the name, but cannot find them in the book.")
             Game.pick_up_soul_book(self)
         if choice == "3":
             value = input("What is name of the soul you seek to set free? >> ")
@@ -240,6 +253,7 @@ class Game:
                 print()
                 print("Somewhere in the distance, a bell tolls.")
             else:
+                print()
                 print("You look to cross out the name, but you cannot find them.")
             Game.pick_up_soul_book(self)
         if choice == "4":
@@ -292,7 +306,7 @@ class Game:
         output_slow(room.intro_text())
         print()
         print(
-            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Meet the ghost \n8. Check inventory"
+            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Speak with the specter \n8. Check inventory"
         )
 
         choice = input("What will you do? >> ")
@@ -330,7 +344,7 @@ class Game:
         output_slow(room.return_text())
         print()
         print(
-            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Check inventory"
+            "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Speak with the specter \n8. Check inventory"
         )
         choice = input("What will you do? >> ")
         if choice == "1":
@@ -346,6 +360,8 @@ class Game:
         if choice == "6":
             Game.return_attic_room(self)
         if choice == "7":
+            Game.go_trading(self)
+        if choice == "8":
             self.player.print_inventory()
             Game.return_staircase(self)
 
