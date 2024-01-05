@@ -323,7 +323,7 @@ class Game:
         room = StairCase()
         # encounter code
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
+        # print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 2:
             self.random_encounter()
             if self.current_enemy:
@@ -357,8 +357,8 @@ class Game:
         room = FourthFloorRoom()
         # encounter code
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
-        if encounter_chance < 9:
+        # print(f"Encounter chance: {encounter_chance}")
+        if encounter_chance < 8:
             self.random_encounter()
             if self.current_enemy:
                 print(f"{self.current_enemy.alive_text}")
@@ -389,7 +389,7 @@ class Game:
         if choice == "2":
             # encounter code
             encounter_chance = random.randint(0, 9)
-            print(f"Encounter chance: {encounter_chance}")
+            # print(f"Encounter chance: {encounter_chance}")
             if encounter_chance < 3:
                 self.random_encounter()
                 if self.current_enemy:
@@ -472,7 +472,7 @@ class Game:
             Game.go_first_floor(self)
         if choice == "2":
             random_fate = random.randint(0, 9)
-            print(f"Random fate: {random_fate}")
+            # print(f"Random fate: {random_fate}")
             if random_fate < 5:
                 print()
                 output_slow(
@@ -491,8 +491,8 @@ class Game:
         room = FirstFloorRoom()
         # encounter code
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
-        if encounter_chance < 4:
+        # print(f"Encounter chance: {encounter_chance}")
+        if encounter_chance < 3:
             self.random_encounter()
             if self.current_enemy:
                 print(f"{self.current_enemy.alive_text}")
