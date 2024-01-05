@@ -1,4 +1,6 @@
 import random
+from sys import settrace
+from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.Enemy import Enemy
 from data.default_enemies import default_enemies
@@ -150,7 +152,9 @@ class Game:
 
     def pick_up_soul_book(self):
         print()
-        output_slow("The book is heavy, bound in leather and chains. The paper is rough cut and thick, the pages so old that they crackle as you turn them.")
+        output_slow(
+            "The book is heavy, bound in leather and chains. The paper is rough cut and thick, the pages so old that they crackle as you turn them."
+        )
         print()
         print(
             "1. Look over all of the names \n2. Look for a specific name \n3. Cross out a name \n4. Put down book "
@@ -168,7 +172,7 @@ class Game:
         if choice == "3":
             value = input("What is name of the soul you seek to set free? >> ")
             soul = Player.find_by_name(value)
-            if soul: 
+            if soul:
                 soul.delete()
                 print()
                 print("Somewhere in the distance, a bell tolls.")
@@ -451,8 +455,10 @@ class Game:
         if choice == "1":
             if any(isinstance(item, Key) for item in self.player.inventory):
                 print()
-                output_slow("As you place your hand on the handle")
-                output_slower("YOU HAVE ESCAPED DEATH")
+                output_slow(
+                    "As you place your hand on the handle, you notice an iron keyhole on one of the doors. You hurridly reach for the key in your pocket, praying to any god that will listen that it will fit the lock. You insert the key into the hole, and to your elation hear a soft click. The doors groan as you pull them open; behind you, you hear the sound of metal dragging against stone and the rattling of bones. Without sparing a second glance, you take off running into the night, and do not stop until the lights of the tower have completely faded into the distance."
+                )
+                output_slower("YOU HAVE ESCAPED DEATH... FOR NOW")
                 exit()
             else:
                 print()
@@ -508,20 +514,34 @@ class Game:
     #     self.current_enemy = random_enemy
 
     # Battle Code
+    def get_random_enemy_id(self):
+        CURSOR.execute("SELECT id FROM enemies ORDER BY RANDOM() LIMIT 1;")
+        result = CURSOR.fetchone()
+
+        if result:
+            return result[0]
+        else:
+            return None
+
     def random_encounter(self):
+        random_enemy_id = self.get_random_enemy_id()
         enemy_types = [
             GrimReaper,
             BlackCat,
             Poltergeist,
             BlackWidow,
-            Enemy.find_by_id(-1),
+            # Enemy.find_by_id(random_enemy_id),
         ]
-        random_enemy_type = random.choice(enemy_types)
-        # random_enemy_type = EnemyAndFriends(enemy_types)
-
-        random_enemy = random_enemy_type()
-
-        self.current_enemy = random_enemy
+        valid_enemy_types = [
+            enemy_type for enemy_type in enemy_types if enemy_type is not None
+        ]
+        if valid_enemy_types:
+            random_enemy_type = random.choice(enemy_types)
+            # random_enemy_type = EnemyAndFriends(enemy_types)
+            random_enemy = random_enemy_type()
+            self.current_enemy = random_enemy
+        else:
+            print("No valid enemy types found.")
 
     def battle(self):
         if not self.player or not self.current_enemy:
