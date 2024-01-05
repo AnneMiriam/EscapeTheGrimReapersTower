@@ -118,7 +118,6 @@ class Game:
         self.enemy.create_table()
         self.enemy.save()
 
-    
     # Battle Code
 
     # def get_random_enemy_id(self):
@@ -137,7 +136,7 @@ class Game:
             BlackCat,
             Poltergeist,
             BlackWidow,
-            #Enemy.find_by_id(-1),
+            # Enemy.find_by_id(-1),
         ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
@@ -162,9 +161,9 @@ class Game:
                     "You flee back to the attic room. It may not be home, but it's the only room you've been safe in so far."
                 )
                 Game.return_attic_room(self)
-            # else:
-            #     print("Invalid choice. You must battle or flee...")
-                
+                # else:
+                #     print("Invalid choice. You must battle or flee...")
+
                 break
 
             if self.current_enemy.hp <= 0:
@@ -358,12 +357,12 @@ class Game:
         # encounter code
         encounter_chance = random.randint(0, 9)
         print(f"Encounter chance: {encounter_chance}")
-        if encounter_chance < 9:
+        if encounter_chance < 7:
             self.random_encounter()
             if self.current_enemy:
                 print(f"{self.current_enemy.alive_text}")
                 self.battle()
-        else:    
+        else:
             print()
             output_slow(room.intro_text())
             print()
@@ -492,7 +491,7 @@ class Game:
         # encounter code
         encounter_chance = random.randint(0, 9)
         print(f"Encounter chance: {encounter_chance}")
-        if encounter_chance < 4:
+        if encounter_chance < 3:
             self.random_encounter()
             if self.current_enemy:
                 print(f"{self.current_enemy.alive_text}")
@@ -513,32 +512,40 @@ class Game:
 
     def go_entryway(self):
         room = EntryWay()
-        print()
-        output_slow(room.intro_text())
-        print()
-        print(
-            "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
-        )
-        choice = input("What will you do? >> ")
-        if choice == "1":
-            if any(isinstance(item, Key) for item in self.player.inventory):
-                print()
-                output_slow(
-                    "As you place your hand on the handle, you notice an iron keyhole on one of the doors. You hurriedly reach for the key in your pocket, praying to any god that will listen that it will fit the lock. You insert the key into the hole, and to your elation hear a soft click. The doors groan as you pull them open; behind you, you hear the sound of metal dragging against stone and the rattling of bones. Without sparing a second glance, you take off running into the night, and do not stop until the lights of the tower have completely faded into the distance."
-                )
-                output_slower("YOU HAVE ESCAPED DEATH... FOR NOW")
-                exit()
-            else:
-                print()
-                output_slow(
-                    "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
-                )
+        encounter_chance = random.randint(0, 9)
+        print(f"Encounter chance: {encounter_chance}")
+        if encounter_chance < 2:
+            self.random_encounter()
+            if self.current_enemy:
+                print(f"{self.current_enemy.alive_text}")
+                self.battle()
+        else:
+            print()
+            output_slow(room.intro_text())
+            print()
+            print(
+                "1.Try your luck with the front door \n2. Return to staircase \n3. Check inventory"
+            )
+            choice = input("What will you do? >> ")
+            if choice == "1":
+                if any(isinstance(item, Key) for item in self.player.inventory):
+                    print()
+                    output_slow(
+                        "As you place your hand on the handle, you notice an iron keyhole on one of the doors. You hurriedly reach for the key in your pocket, praying to any god that will listen that it will fit the lock. You insert the key into the hole, and to your elation hear a soft click. The doors groan as you pull them open; behind you, you hear the sound of metal dragging against stone and the rattling of bones. Without sparing a second glance, you take off running into the night, and do not stop until the lights of the tower have completely faded into the distance."
+                    )
+                    output_slower("YOU HAVE ESCAPED DEATH... FOR NOW")
+                    exit()
+                else:
+                    print()
+                    output_slow(
+                        "You pull at the handles of the double doors as hard as you can, but they won't budge an inch. You notice a large keyhole on one of the doors. Maybe the key is around here somewhere?"
+                    )
+                    Game.return_entryway(self)
+            if choice == "2":
+                Game.return_staircase(self)
+            if choice == "3":
+                self.player.print_inventory()
                 Game.return_entryway(self)
-        if choice == "2":
-            Game.return_staircase(self)
-        if choice == "3":
-            self.player.print_inventory()
-            Game.return_entryway(self)
 
     def return_entryway(self):
         room = EntryWay()
@@ -566,5 +573,3 @@ class Game:
         if choice == "3":
             self.player.print_inventory()
             Game.return_entryway(self)
-
-
