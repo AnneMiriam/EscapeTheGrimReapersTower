@@ -6,7 +6,6 @@ from models.player import Player
 from models.enemy import Enemy
 
 
-
 def main():
     while True:
         print()
