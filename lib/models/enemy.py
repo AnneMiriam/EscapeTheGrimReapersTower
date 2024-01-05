@@ -32,29 +32,7 @@ class Enemy:
             raise ValueError("Name must be a string.")
 
     
-    # @property
-    # def hp(self):
-    #     return self._hp
-
-    # @hp.setter
-    # def hp(self, hp):
-    #     if isinstance(hp, int):
-
-    #         self._hp = hp
-    #     else:
-    #         raise ValueError("HP must be an integer.")
-
-    # @property
-    # def damage(self):
-    #     return self._damage
-
-    # @damage.setter
-    # def damage(self, damage):
-    #     if isinstance(damage, int) and damage > 0:
-    #         self._damage = damage
-    #     else:
-    #         raise ValueError("Damage must be a positive integer.")
-
+    
     @classmethod
     def create_table(cls):
         sql = """ CREATE TABLE IF NOT EXISTS enemies (
@@ -156,7 +134,7 @@ class BlackCat(Enemy):
 
 class Poltergeist(Enemy):
     def __init__(self):
-        self.name = "Ghost"
+        self.name = "Evil Spirit"
         self.hp = 10
         self.damage = random.randint(5, 10)
         self.alive_text = "You pissed off a Poltergeist!"

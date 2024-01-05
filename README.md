@@ -1,5 +1,5 @@
-# EscapeTheGrimReapersTower
-
+# Escape The Grim Reaper's Tower
+-----
 ## Introduction
 
 Welcome to The Grim Reaper's Tower. You have suddenly found yourself trapped inside it on the top floor. It is your goal to escape the tower. To do so you must make your way to the ground level where there is an entryway with a door, or you can jump out a window to the ground at your own risk. Before you can exit the front door, however, you must find the key that unlocks the entryway. There are other items that you can find along the way, that will help you, such as bread that can heal you.
