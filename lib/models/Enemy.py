@@ -1,12 +1,12 @@
-from models.__init__ import CURSOR, CONN
 
+from models.__init__ import CURSOR, CONN
 import random
 
 
 class Enemy:
     ALL = {}
 
-    def __init__(self, name=None, id=None):
+    def __init__(self, name, id=None):
         self.id = id
         self.name = name
         self.hp = 5
@@ -110,7 +110,9 @@ class Enemy:
             enemy.damage = row[3]
 
         else:
-            enemy = cls(row[1], row[2], row[3])
+            enemy = cls(row[1])
+            enemy.hp = row[2]
+            enemy.damage = row[3]
             enemy.id = row[0]
             cls.ALL[enemy.id] = enemy
         return enemy
@@ -125,6 +127,12 @@ class Enemy:
     def find_by_id(cls, id):
         sql = """SELECT * FROM enemies WHERE id = ?"""
         row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """SELECT * FROM enemies WHERE name is ?"""
+        row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
 

@@ -20,7 +20,7 @@ Take a look at the directory structure:
 └── lib
     ├── models
     │   ├── __init__.py
-    │   ├── Enemy.py
+    │   ├── enemy.py
     │   ├── game.py
     │   ├── items.py
     │   ├── NonPlayChar.py

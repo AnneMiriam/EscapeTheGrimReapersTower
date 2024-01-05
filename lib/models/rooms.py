@@ -1,5 +1,5 @@
 import random
-from models.Enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
+from models.enemy import Enemy, BlackCat, BlackWidow, Poltergeist, GrimReaper
 
 # from data.default_enemies import default_enemies
 from models.NonPlayChar import Casper
