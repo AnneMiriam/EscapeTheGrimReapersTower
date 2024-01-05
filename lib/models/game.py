@@ -50,12 +50,17 @@ class Game:
                 hp_change = exchange.healing_value
                 consumer.hp = initial_hp + hp_change
 
+                if hp_change < 0 and abs(hp_change) > initial_hp:
+                    consumer.hp = 0
+                else:
+                    consumer.hp = initial_hp + hp_change
+
                 hp_change_str = (
                     f"({hp_change} HP)" if hp_change < 0 else f"(+{hp_change} HP)"
                 )
 
                 print(
-                    f"Trade sealed in ethereal terms. Your updated HP: {consumer.hp} ({hp_change_str}))"
+                    f"Trade sealed in ethereal terms. Your updated HP: {consumer.hp} {hp_change_str}"
                 )
 
             except ValueError as e:
@@ -142,15 +147,15 @@ class Game:
             return None
 
     def random_encounter(self):
-        random_enemy_id = self.get_random_enemy_id()
+
+#         random_enemy_id = self.get_random_enemy_id()
         enemy_types = [
             GrimReaper,
             BlackCat,
             Poltergeist,
             BlackWidow,
-            # Enemy.find_by_id(random_enemy_id)
+            Enemy.find_by_id(-1),
         ]
-
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
         random_enemy = random_enemy_type()
