@@ -72,13 +72,13 @@ class Game:
             seller.inventory.remove(item)
             consumer.inventory.append(item)
 
-            if item.healing_value < 0:
-                print("Trade sealed in ethereal terms.")
-                print(f"Your updated HP: {consumer.hp} ({item.healing_value} HP)")
-            else:
-                consumer.hp += item.healing_value
-                print("Trade sealed in ethereal terms.")
-                print(f"Your updated HP: {consumer.hp} (+{item.healing_value})")
+            # if item.healing_value < 0:
+            #     print("Trade sealed in ethereal terms.")
+            #     print(f"Your updated HP: {consumer.hp} ({item.healing_value} HP)")
+            # else:
+            #     consumer.hp += item.healing_value
+            #     print("Trade sealed in ethereal terms.")
+            #     print(f"Your updated HP: {consumer.hp} (+{item.healing_value})")
 
     def create_player(self):
         while True:
@@ -129,7 +129,7 @@ class Game:
     #         self.current_enemy = random_enemy
     #     else:
     #         print("Invalid enemy data. Missing required attributes.")
-            
+
     # Battle Code
     
     def get_random_enemy_id(self):
@@ -143,8 +143,11 @@ class Game:
     def random_encounter(self):
       random_enemy_id = self.get_random_enemy_id()
         enemy_types = [
+
             GrimReaper, BlackCat, Poltergeist, BlackWidow,
-                      # Enemy.find_by_id(random_enemy_id)]
+                      # Enemy.find_by_id(random_enemy_id)
+        ]
+
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
         random_enemy = random_enemy_type()
@@ -172,7 +175,9 @@ class Game:
                 print("Invalid choice. You must battle or flee...")
 
             if self.current_enemy.hp <= 0:
-                print(f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!")
+                print(
+                    f"{self.current_enemy.dead_text} \nYou defeated the {self.current_enemy.name}!"
+                )
                 break
 
             self.attack(self.current_enemy, self.player)
@@ -187,9 +192,6 @@ class Game:
         attacker_damage = attacker.damage
         print(f"{attacker.name} attacks {target.name} for {attacker_damage} damage!")
         target.hp -= attacker_damage
-
-            
- 
 
     # START GAME and room navigation
     def start_game(self):
@@ -439,7 +441,7 @@ class Game:
         output_slow(room.intro_text())
         print()
         print("1. Investigate desk \n2. Return to staircase \n3. Check Inventory")
-        choice = input("Whhat will you do? >> ")
+        choice = input("What will you do? >> ")
         if choice == "1":
             print()
             output_slow(
@@ -573,4 +575,3 @@ class Game:
     #     random_enemy.save()
     #     # Set the current_enemy to the randomly encountered enemy
     #     self.current_enemy = random_enemy
-
