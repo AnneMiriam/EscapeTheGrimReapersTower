@@ -362,7 +362,7 @@ class Game:
         room = FourthFloorRoom()
         # encounter code
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
+        # print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 7:
             self.random_encounter()
             if self.current_enemy:
@@ -519,7 +519,7 @@ class Game:
     def go_entryway(self):
         room = EntryWay()
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
+        # print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 2:
             self.random_encounter()
             if self.current_enemy:
