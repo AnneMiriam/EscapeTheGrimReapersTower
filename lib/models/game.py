@@ -136,7 +136,7 @@ class Game:
             BlackCat,
             Poltergeist,
             BlackWidow,
-            #Enemy.find_by_id(-1),
+            # Enemy.find_by_id(-1),
         ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
@@ -291,7 +291,7 @@ class Game:
             Game.go_staircase(self)
         if choice == "3":
             self.player.print_inventory()
-            Game.return_attic_room
+            Game.return_attic_room(self)
         if choice == "4":
             Game.pick_up_soul_book(self)
 
@@ -339,7 +339,7 @@ class Game:
             output_slow(room.return_text())
             print()
             print(
-                "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Check inventory"
+                "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Speak with the specter \n8. Check inventory"
             )
             choice = input("What will you do? >> ")
             if choice == "1":
@@ -355,6 +355,8 @@ class Game:
             if choice == "6":
                 Game.return_attic_room(self)
             if choice == "7":
+                Game.go_trading(self)
+            if choice == "8":
                 self.player.print_inventory()
                 Game.return_staircase(self)
 
@@ -372,7 +374,7 @@ class Game:
             print()
             output_slow(room.intro_text())
             print()
-            print("1. Return to the staircase \n2.Check inventory")
+            print("1. Return to the staircase \n2. Check inventory")
             choice = input("What will you do? >> ")
             if choice == "1":
                 Game.return_staircase(self)
@@ -440,6 +442,7 @@ class Game:
                 "Almost as soon as your feet leave the railing, you know you made a grave mistake. As you fall you reach out, trying to grasp for the railing of the balcony below you, but the rain prevents you from finding purchase. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh like the sound of hundreds of clacking bones as the lights of the tower rooms grow farther away. No longer able to bear the sight of your own iminent death - your failure - you close your eyes and wait for the pain."
             )
             output_slower("GAME OVER")
+            exit()
         if choice == "3":
             self.player.print_inventory()
             Game.go_third_floor_window(self)
@@ -481,7 +484,7 @@ class Game:
             if random_fate < 5:
                 print()
                 output_slow(
-                    "You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!"
+                    "You step onto the railing and almost lose your footing. You fumble for a moment, terror beginning to well up in your stomach, but you are able to stabilize. You let out a sigh of relief and take a look around. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground - a stinging pain rushes through them, but you are alive. And FREE!"
                 )
                 output_slower("YOU HAVE ESCAPED DEATH... FOR NOW!")
                 exit()
@@ -491,6 +494,7 @@ class Game:
                     "As you step onto the railing you loose your footing on the slippery metal, you know you made a grave mistake. You can see the ground raising towards you. Your eyes go wide with horror as time slows. You hear a low, rumbling laugh - you close your eyes and wait for the pain."
                 )
                 output_slower("GAME OVER")
+                exit()
 
     def go_first_floor(self):
         room = FirstFloorRoom()
@@ -506,7 +510,7 @@ class Game:
             print()
             output_slow(room.intro_text())
             print()
-            print("1.Go to the window \n2. Return to staircase \n3. Check inventory")
+            print("1. Go to the window \n2. Return to staircase \n3. Check inventory")
             choice = input("What will you do? >> ")
             if choice == "1":
                 Game.go_first_floor_window(self)
