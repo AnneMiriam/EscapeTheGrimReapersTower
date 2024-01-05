@@ -136,7 +136,8 @@ class Game:
             BlackCat,
             Poltergeist,
             BlackWidow,
-            # Enemy.find_by_id(-1),
+            #Enemy.find_by_id(-1),
+
         ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
