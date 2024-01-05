@@ -2,7 +2,8 @@ from models.items import *
 
 
 class NonPlayableCharacter:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         raise NotImplementedError("Do not create raw Non Playable Character objects.")
 
     def __str__(self):

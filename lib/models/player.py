@@ -13,10 +13,9 @@ class Player:
         self.inventory = []
         self.damage = 5
         self.victory = False
-        self.location = AtticRoom()
 
     def __repr__(self):
-        return f"Current unfortunate soul: {self.name}" + f"Life remaining: {self.hp}"
+        return f"|Soul {self.id}: {self.name}, Vitality: {self.hp}| "
 
     def print_inventory(self):
         if self.inventory:
@@ -27,7 +26,6 @@ class Player:
         else:
             print()
             print("Your pockets are empty, save for a bit of lint and some old crumbs.")
-            
 
     def add_to_inventory(self, item):
         self.inventory.append(item)
@@ -104,7 +102,7 @@ class Player:
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
-        del type(self).all[self.id]
+        del type(self).ALL[self.id]
         self.id = None
 
     @classmethod
@@ -115,14 +113,14 @@ class Player:
 
     @classmethod
     def instance_from_db(cls, row):
-        player = cls.all.get(row[0])
+        player = cls.ALL.get(row[0])
         if player:
             player.name = row[1]
             player.hp = row[2]
         else:
             player = cls(row[1], row[2])
             player.id = row[0]
-            cls.all[player.id] = player
+            cls.ALL[player.id] = player
         return player
 
     @classmethod
