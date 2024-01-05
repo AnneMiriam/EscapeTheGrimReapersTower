@@ -141,7 +141,7 @@ class GrimReaper(Enemy):
         self.name = "Grim Reaper"
         self.hp = 100
         self.damage = random.randint(10, 20)
-        self.alive_text = "You have run into the Grim Reaper!"
+        self.alive_text = "From the shadows, a hooded figure emerges. It towers above you, its head bowed slightly as to not scrape the cieling. Skeletal fingers poke out from a heavy sleeve, wrapped around the intricately carved handle of a scythe. Two eyeless sockets stare at you from under its hood, and you feel its gaze pierce your very soul."
         self.dead_text = "They are death! They cannot be killed!"
 
 
