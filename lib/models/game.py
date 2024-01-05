@@ -1,6 +1,4 @@
 import random
-from sys import settrace
-from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.enemy import Enemy
 from data.default_enemies import default_enemies
@@ -136,7 +134,7 @@ class Game:
             BlackCat,
             Poltergeist,
             BlackWidow,
-            #Enemy.find_by_id(-1),
+            # Enemy.find_by_id(-1),
         ]
         random_enemy_type = random.choice(enemy_types)
         # random_enemy_type = EnemyAndFriends(enemy_types)
@@ -291,7 +289,7 @@ class Game:
             Game.go_staircase(self)
         if choice == "3":
             self.player.print_inventory()
-            Game.return_attic_room
+            Game.return_attic_room(self)
         if choice == "4":
             Game.pick_up_soul_book(self)
 
