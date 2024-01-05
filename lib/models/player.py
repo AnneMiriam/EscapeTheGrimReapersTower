@@ -1,8 +1,7 @@
 import re
-from lib.models.rooms import *
+from models.rooms import *
 from models.items import *
 from models.__init__ import CURSOR, CONN
-
 
 class Player:
     ALL = {}

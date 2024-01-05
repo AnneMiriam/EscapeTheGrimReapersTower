@@ -1,6 +1,6 @@
 # lib/helpers.py
 import time
-from models.Enemy import Enemy
+from models.enemy import Enemy
 from models.NonPlayChar import NonPlayableCharacter
 from models.player import Player
 from models.rooms import MapRoom
