@@ -1,6 +1,4 @@
 import random
-# from sys import settrace
-# from models.__init__ import CURSOR, CONN
 from models.items import *
 from models.enemy import Enemy
 # from data.default_enemies import default_enemies
@@ -127,7 +125,7 @@ class Game:
             BlackCat,
             Poltergeist,
             BlackWidow,
-            #Enemy.find_by_id(-1),
+            # Enemy.find_by_id(-1),
         ]
         random_enemy_type = random.choice(enemy_types)
         random_enemy = random_enemy_type()
@@ -328,7 +326,7 @@ class Game:
             output_slow(room.return_text())
             print()
             print(
-                "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Check inventory"
+                "1. Go to the fourth floor door \n2. Go to the third floor door \n3. Go to the second floor door \n4. Go to the first floor door \n5. Go to the entryway \n6. Return to attic room \n7. Speak with the specter \n8. Check inventory"
             )
             choice = input("What will you do? >> ")
             if choice == "1":
@@ -344,6 +342,8 @@ class Game:
             if choice == "6":
                 Game.return_attic_room(self)
             if choice == "7":
+                Game.go_trading(self)
+            if choice == "8":
                 self.player.print_inventory()
                 Game.return_staircase(self)
 
@@ -361,7 +361,7 @@ class Game:
             print()
             output_slow(room.intro_text())
             print()
-            print("1. Return to the staircase \n2.Check inventory")
+            print("1. Return to the staircase \n2. Check inventory")
             choice = input("What will you do? >> ")
             if choice == "1":
                 Game.return_staircase(self)
@@ -471,7 +471,7 @@ class Game:
             if random_fate < 5:
                 print()
                 output_slow(
-                    "You step onto the railing and almost loose your footing. 'That was close', you thought. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground, a stinging pain rushes through them, but you are alive. And FREE!"
+                    "You step onto the railing and almost lose your footing. You fumble for a moment, terror beginning to well up in your stomach, but you are able to stabilize. You let out a sigh of relief and take a look around. You can vaguely see the ground below, it doesn't seem that far. You hear a low, rumbling laugh, like the tower itself is laughing. You know it is now or never! You take a deep breath and jump. \n \n Your feet hit the ground - a stinging pain rushes through them, but you are alive. And FREE!"
                 )
                 output_slower("YOU HAVE ESCAPED DEATH... FOR NOW!")
                 exit()
@@ -497,7 +497,7 @@ class Game:
             print()
             output_slow(room.intro_text())
             print()
-            print("1.Go to the window \n2. Return to staircase \n3. Check inventory")
+            print("1. Go to the window \n2. Return to staircase \n3. Check inventory")
             choice = input("What will you do? >> ")
             if choice == "1":
                 Game.go_first_floor_window(self)
@@ -510,7 +510,7 @@ class Game:
     def go_entryway(self):
         room = EntryWay()
         encounter_chance = random.randint(0, 9)
-        print(f"Encounter chance: {encounter_chance}")
+        # print(f"Encounter chance: {encounter_chance}")
         if encounter_chance < 2:
             self.random_encounter()
             if self.current_enemy:
